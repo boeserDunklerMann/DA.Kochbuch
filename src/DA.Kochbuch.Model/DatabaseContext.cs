@@ -7,9 +7,11 @@ namespace DA.Kochbuch.Model
 	/// </ChangeLog>
 	public class DatabaseContext : DbContext
 	{
-		public DatabaseContext() { }
-		public System.Data.Entity.IDbSet<Recipe>  Recipes { get; set; }
-
+		public DatabaseContext() : base()
+		{
+		}
+		public DbSet<Recipe> Recipes { get; set; }
+		public DbSet<User> Users { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			// TODO: see here: https://github.com/entityframeworktutorial/EF6-Code-First-Demo/blob/master/EF6CodeFirstDemo/SchoolContext.cs
