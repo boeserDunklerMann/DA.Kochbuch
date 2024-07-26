@@ -9,7 +9,7 @@ namespace DA.Kochbuch.Model
 	/// </ChangeLog>
 	public class DatabaseContext : DbContext
 	{
-		public DatabaseContext() : base("Kochbuch")
+		public DatabaseContext() : base("Kochbuch") // TODO DA: from cfg see: https://www.entityframeworktutorial.net/code-first/database-initialization-in-code-first.aspx
 		{
 			Database.SetInitializer<DatabaseContext>(new KochbuchDBInitializer());
 		}

@@ -5,7 +5,7 @@ namespace DA.Kochbuch.Model
 	/// <ChangeLog>
 	/// <Create Datum="26.07.2024" Entwickler="DA" />
 	/// </ChangeLog>
-	public class KochbuchDBInitializer : DropCreateDatabaseAlways<DatabaseContext>
+	public class KochbuchDBInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
 	{
 		protected override void Seed(DatabaseContext context)
 		{
