@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿//using Microsoft.EntityFrameworkCore;
+
+using System.Data.Entity;
 
 namespace DA.Kochbuch.Model
 {
@@ -7,12 +9,15 @@ namespace DA.Kochbuch.Model
 	/// </ChangeLog>
 	public class DatabaseContext : DbContext
 	{
-		public DatabaseContext() : base()
+		public DatabaseContext() : base("Kochbuch")
 		{
+			Database.SetInitializer<DatabaseContext>(new KochbuchDBInitializer());
 		}
+
 		public DbSet<Recipe> Recipes { get; set; }
 		public DbSet<User> Users { get; set; }
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		public DbSet<UnitsTypes.IngredientUnit> Units { get; set; }
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			// TODO: see here: https://github.com/entityframeworktutorial/EF6-Code-First-Demo/blob/master/EF6CodeFirstDemo/SchoolContext.cs
 			base.OnModelCreating(modelBuilder);

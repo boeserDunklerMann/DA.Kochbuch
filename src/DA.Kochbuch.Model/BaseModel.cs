@@ -14,7 +14,7 @@
 		/// <summary>
 		/// Änderungsdatum des Datensatzes
 		/// </summary>
-		public virtual DateTime ChangeDate { get; set; }
+		public virtual DateTime? ChangeDate { get; set; }
 
 		public abstract void PopulateMyID();
 		public static T Create<T>(string? name = null) where T : BaseModel, new()
