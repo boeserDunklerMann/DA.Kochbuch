@@ -7,7 +7,7 @@
 	{
 		//public string rev { get; set; }
 
-		public virtual string ID { get; set; } = string.Empty;
+		public virtual int ID { get; set; }
 
 		public virtual string? Name { get; set; } = string.Empty;
 
@@ -19,7 +19,7 @@
 		public abstract void PopulateMyID();
 		public static T Create<T>(string? name = null) where T : BaseModel, new()
 		{
-			return new T { ID = Guid.NewGuid().ToString(), Name = name };
+			return new T { Name = name };
 		}
 	}
 }

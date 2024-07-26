@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 
 namespace DA.Kochbuch.Model
 {
@@ -14,11 +9,12 @@ namespace DA.Kochbuch.Model
 	{
 		protected override void Seed(DatabaseContext context)
 		{
+			// TODO DA: remove this list in external xml-config
 			IList<UnitsTypes.IngredientUnit> units =
 			[
-				new UnitsTypes.IngredientUnit() { Name = "kg", ID=Guid.NewGuid().ToString() }, new UnitsTypes.IngredientUnit() { Name = "g", ID=Guid.NewGuid().ToString() },
-				new UnitsTypes.IngredientUnit(){Name="Stk", ID=Guid.NewGuid().ToString()}, new UnitsTypes.IngredientUnit(){Name="Msp", ID=Guid.NewGuid().ToString()},
-				new UnitsTypes.IngredientUnit(){Name="n.B.", ID=Guid.NewGuid().ToString()}
+				new UnitsTypes.IngredientUnit() { Name = "kg", ID=1 }, new UnitsTypes.IngredientUnit() { Name = "g", ID=2 },
+				new UnitsTypes.IngredientUnit(){Name="Stk", ID=3}, new UnitsTypes.IngredientUnit(){Name="Msp", ID=4},
+				new UnitsTypes.IngredientUnit(){Name="n.B.", ID=5}
 			];
 			context.Units.AddRange(units);
 

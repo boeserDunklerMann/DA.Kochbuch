@@ -11,7 +11,11 @@
 	/// </example>
 	public class IngredientUnit : BaseModel
 	{
-		public override void PopulateMyID()
+        public IngredientUnit()
+        {
+			ChangeDate = DateTime.Now;
+        }
+        public override void PopulateMyID()
 		{
 			throw new NotImplementedException();
 		}

@@ -9,7 +9,7 @@ namespace DA.Kochbuch.Cons.Test
 			Console.WriteLine("Hello, World!");
 			using (var ctx = new Model.DatabaseContext())
 			{
-				User user = new User() {  Name = "André" };
+				User user = new User() { Name = "André", ChangeDate = DateTime.Now, ID = 1 };
 				ctx.Users.Add(user);
 				ctx.SaveChanges();
 			}
