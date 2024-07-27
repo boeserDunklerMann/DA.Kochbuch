@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DA.Kochbuch.Cons.Test", "DA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Kochbuch.Api", "DA.Kochbuch.Api\DA.Kochbuch.Api.csproj", "{D8374A58-12D7-4489-93F5-798AA594DA65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Kochbuch.EFCore.Cons.Test", "DA.Kochbuch.EFCore.Cons.Test\DA.Kochbuch.EFCore.Cons.Test.csproj", "{F6BC1F19-E50A-452B-BC00-439646F7D747}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D8374A58-12D7-4489-93F5-798AA594DA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8374A58-12D7-4489-93F5-798AA594DA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8374A58-12D7-4489-93F5-798AA594DA65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6BC1F19-E50A-452B-BC00-439646F7D747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6BC1F19-E50A-452B-BC00-439646F7D747}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6BC1F19-E50A-452B-BC00-439646F7D747}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6BC1F19-E50A-452B-BC00-439646F7D747}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
