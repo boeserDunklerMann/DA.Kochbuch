@@ -9,7 +9,7 @@
 
 		public virtual int ID { get; set; }
 
-		public virtual string? Name { get; set; } = string.Empty;
+		public virtual string Name { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Änderungsdatum des Datensatzes
@@ -17,7 +17,7 @@
 		public virtual DateTime? ChangeDate { get; set; }
 
 		public abstract void PopulateMyID();
-		public static T Create<T>(string? name = null) where T : BaseModel, new()
+		public static T Create<T>(string name = null) where T : BaseModel, new()
 		{
 			return new T { Name = name };
 		}

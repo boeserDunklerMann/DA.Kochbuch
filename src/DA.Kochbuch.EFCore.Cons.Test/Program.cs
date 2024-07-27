@@ -43,6 +43,8 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 				Name = "André",
 				ChangeDate = DateTime.Now
 			};
+			ctx.Users.Add(user);
+
 			// assign user to recipe
 			r.User = user;
 			// save
