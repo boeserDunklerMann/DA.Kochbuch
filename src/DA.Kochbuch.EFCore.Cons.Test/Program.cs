@@ -13,8 +13,8 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 		static void Main(string[] args)
 		{
 			Console.WriteLine("Hello, World!");
-            Console.WriteLine("Drop database before running");
-            //InsertData();
+			Console.WriteLine("Drop database before running");
+			//InsertData();
 			ReadData();
 		}
 
@@ -31,6 +31,18 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 				new IngredientUnit(){ID=4, Name="Msp"},
 				new IngredientUnit(){ID=5, Name="n.B."}
 			]);
+			
+			// add ingredients
+			Ingredient i1 = new Ingredient()
+			{
+				ID = 1,
+				Amount = 500,
+				Unit = unit,
+				Name = "Mehl",
+				ChangeDate = DateTime.Now
+			};
+			ctx.Ingredients.Add(i1);
+
 			// add recipe
 			/* this must fail - missing instructions */
 			Recipe r = new Recipe()
@@ -41,6 +53,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 				CookInstructon = "abc"
 			};
 			ctx.Recipes.Add(r);
+
 			// create user
 			User user = new User()
 			{
@@ -52,6 +65,8 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 
 			// assign user to recipe
 			r.User = user;
+			r.Ingredients.Add(i1);
+
 			// save
 			ctx.SaveChanges();
 		}
@@ -62,8 +77,10 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			{
 				// TODO: durch das Laen der Rezepte, haben die User dann auch ihre Rezepte bekommen (Z66).
 				// unschön, aber ein Workaround, den ich zufällig rausbekommen habe.
+				var _ = ctx.Units.ToList();
+				ctx.Ingredients.ToList();
 				var recipes = ctx.Recipes.Include(r => r.User).ToList();
-				var users = ctx.Users.Include("Recipes").ToList();
+				var users = ctx.Users.Include("Recipes").ToList();	// jetzt haben die Rezepte auch User
 
 				// TODO: Das ist zwar umständlich aber funktioniert!
 				var firstUser = ctx.Users.First();
