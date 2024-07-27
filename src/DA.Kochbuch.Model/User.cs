@@ -15,6 +15,11 @@
 		/// the users favorite recipes (from others)
 		/// </summary>
 		public virtual ICollection<Recipe> Favorites { get; set; }
+
+		/// <summary>
+		/// the users subscribed users
+		/// </summary>
+		public virtual ICollection<User> Subscriptions { get; set; }
 	}
 }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
