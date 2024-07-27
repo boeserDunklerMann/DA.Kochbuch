@@ -14,7 +14,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 		{
 			Console.WriteLine("Hello, World!");
 			Console.WriteLine("Drop database before running");
-			//InsertData();
+			InsertData();
 			ReadData();
 		}
 
@@ -85,9 +85,9 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 				// TODO: Das ist zwar umständlich aber funktioniert!
 				var firstUser = ctx.Users.First();
 				ctx.Entry(firstUser)
-					.Collection(u => u.Recipes).Load();
+					.Collection(u => u.OwnRecipes).Load();
 				Console.WriteLine(firstUser.Name);
-				foreach(var recipe in firstUser.Recipes)
+				foreach(var recipe in firstUser.OwnRecipes)
 				{
                     Console.WriteLine(recipe.Name);
                 }

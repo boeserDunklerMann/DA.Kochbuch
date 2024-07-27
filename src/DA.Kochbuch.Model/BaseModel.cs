@@ -7,7 +7,8 @@ namespace DA.Kochbuch.Model
 	/// </ChangeLog>
 	public abstract class BaseModel
 	{
-		//public string rev { get; set; }
+		// TODO AD: muss das hier alles virtual sein?
+
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
 
@@ -17,8 +18,12 @@ namespace DA.Kochbuch.Model
 		/// Änderungsdatum des Datensatzes
 		/// </summary>
 		public virtual DateTime? ChangeDate { get; set; }
-
-		public abstract void PopulateMyID();
+		/// <summary>
+		/// Erstellungsdatum
+		/// </summary>
+		public virtual DateTime? CreationDate { get; set; }
+		public virtual bool Deleted { get; set; }
+		//public abstract void PopulateMyID();
 		public static T Create<T>(string name = null) where T : BaseModel, new()
 		{
 			return new T { Name = name };

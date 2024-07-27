@@ -13,9 +13,5 @@
 		public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
 		public virtual User User { get; set; }
 		public string? CookInstructon { get; set; }// = string.Empty;
-        public override void PopulateMyID()
-		{
-			throw new NotImplementedException();
-		}
 	}
 }

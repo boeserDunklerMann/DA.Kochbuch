@@ -37,7 +37,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			{
 				entity.HasKey(r => r.ID);
 				entity.Property(r => r.CookInstructon).IsRequired();
-				entity.HasOne(r => r.User).WithMany(u => u.Recipes);
+				entity.HasOne(r => r.User).WithMany(u => u.OwnRecipes);
 			});
 			modelBuilder.Entity<Ingredient>(entity =>
 			{
@@ -50,7 +50,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			{
 				entity.HasKey(u => u.ID);
 				entity.Property(u => u.Name).IsRequired();
-				entity.HasMany(u => u.Recipes).WithOne(r=>r.User);
+				entity.HasMany(u => u.OwnRecipes).WithOne(r=>r.User);
 			});
 		}
 	}
