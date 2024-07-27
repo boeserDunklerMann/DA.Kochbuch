@@ -12,6 +12,7 @@ namespace DA.Kochbuch.Model
 	{
         public float Amount { get; set; }
         public IngredientUnit? Unit { get; set; }
+		public virtual Recipe Recipe { get; set; }
 
         public override void PopulateMyID()
 		{

@@ -11,6 +11,7 @@
 	/// </example>
 	public class IngredientUnit : BaseModel
 	{
+		public virtual ICollection<Ingredient> Ingredients { get; set; }
         public IngredientUnit()
         {
 			ChangeDate = DateTime.Now;

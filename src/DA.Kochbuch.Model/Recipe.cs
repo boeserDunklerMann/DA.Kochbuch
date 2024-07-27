@@ -10,7 +10,7 @@
 		/// </summary>
 		public int NumberPersons { get; set; }
 
-		public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+		public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
 		public string CookInstructon { get; set; } = string.Empty;
         public override void PopulateMyID()
 		{
