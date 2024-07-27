@@ -20,7 +20,8 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
 			//optionsBuilder.UseMySQL("Server=localhost;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;");	// MariaDB 11+ doesnt work because of nullable PKs?
-			optionsBuilder.UseMySQL("Server=192.168.2.108;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;");	// captaintrips with Mariadb 10
+			optionsBuilder
+				.UseMySQL("Server=192.168.2.108;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;");	// captaintrips with Mariadb 10
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,6 +50,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			{
 				entity.HasKey(u => u.ID);
 				entity.Property(u => u.Name).IsRequired();
+				entity.HasMany(u => u.Recipes).WithOne(r=>r.User);
 			});
 		}
 	}

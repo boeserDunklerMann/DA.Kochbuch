@@ -1,17 +1,21 @@
 ﻿using DA.Kochbuch.Model;
 using DA.Kochbuch.Model.UnitsTypes;
+using System.Data.Entity;
 
 namespace DA.Kochbuch.EFCore.Cons.Test
 {
 	/// <ChangeLog>
 	/// <Create Datum="27.07.2024" Entwickler="DA" />
 	/// </ChangeLog>
+	/// <see href="https://dev.mysql.com/doc/connector-net/en/connector-net-entityframework-core-example.html"/>
 	internal class Program
 	{
 		static void Main(string[] args)
 		{
 			Console.WriteLine("Hello, World!");
-			InsertData();
+            Console.WriteLine("Drop database before running");
+            //InsertData();
+			ReadData();
 		}
 
 		static void InsertData()
@@ -30,11 +34,12 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			// add recipe
 			/* this must fail - missing instructions */
 			Recipe r = new Recipe()
-				{
-					ID = 1,
-					Name = "Kartoffelsuppe",
-					NumberPersons = 3
-				};
+			{
+				ID = 1,
+				Name = "Kartoffelsuppe",
+				NumberPersons = 3,
+				CookInstructon = "abc"
+			};
 			ctx.Recipes.Add(r);
 			// create user
 			User user = new User()
@@ -49,6 +54,43 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			r.User = user;
 			// save
 			ctx.SaveChanges();
+		}
+
+		static void ReadData()
+		{
+			using (KochbuchContext ctx = new KochbuchContext())
+			{
+				// TODO: durch das Laen der Rezepte, haben die User dann auch ihre Rezepte bekommen (Z66).
+				// unschön, aber ein Workaround, den ich zufällig rausbekommen habe.
+				var recipes = ctx.Recipes.Include(r => r.User).ToList();
+				var users = ctx.Users.Include("Recipes").ToList();
+
+				// TODO: Das ist zwar umständlich aber funktioniert!
+				var firstUser = ctx.Users.First();
+				ctx.Entry(firstUser)
+					.Collection(u => u.Recipes).Load();
+				Console.WriteLine(firstUser.Name);
+				foreach(var recipe in firstUser.Recipes)
+				{
+                    Console.WriteLine(recipe.Name);
+                }
+
+				//foreach(var user in users)
+				//{
+				//	Console.WriteLine(user.Name);
+				//	foreach(var recipe in user.Recipes)
+				//	{
+    //                    Console.WriteLine(recipe.Name);
+    //                }
+				//}
+
+				//var r = ctx.Recipes.Find(1);
+				//foreach(Recipe recipe in recipes)
+				//{
+				//	Console.WriteLine($"title: {recipe.Name}");
+				//	Console.WriteLine($"owner: {recipe.User.Name}");
+    //            }
+			}
 		}
 	}
 }

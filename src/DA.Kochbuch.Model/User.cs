@@ -5,7 +5,7 @@
 	/// </ChangeLog>
 	public class User : BaseModel
 	{
-		public List<Recipe> Recipes { get; set; } = new List<Recipe> { };
+		public virtual ICollection<Recipe> Recipes { get; set; }
 
 		public override void PopulateMyID()
 		{
