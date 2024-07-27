@@ -18,6 +18,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
+			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
 			//optionsBuilder.UseMySQL("Server=localhost;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;");	// MariaDB 11+ doesnt work because of nullable PKs?
 			optionsBuilder.UseMySQL("Server=192.168.2.108;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;");	// captaintrips with Mariadb 10
 		}
@@ -29,25 +30,25 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			modelBuilder.Entity<IngredientUnit>(entity =>
 			{
 				entity.HasKey(iu => iu.ID);
-				//entity.Property(iu => iu.Name).IsRequired();
+				entity.Property(iu => iu.Name).IsRequired();
 			});
 			modelBuilder.Entity<Recipe>(entity =>
 			{
 				entity.HasKey(r => r.ID);
 				entity.Property(r => r.CookInstructon).IsRequired();
-				//entity.HasOne(r => r.User).WithMany(u => u.Recipes);
+				entity.HasOne(r => r.User).WithMany(u => u.Recipes);
 			});
 			modelBuilder.Entity<Ingredient>(entity =>
 			{
 				entity.HasKey(i => i.ID);
-				//entity.Property(i => i.Name).IsRequired();
-				//entity.HasOne(i => i.Recipe).WithMany(r => r.Ingredients);
-				//entity.HasOne(i => i.Unit).WithMany(iu => iu.Ingredients);
+				entity.Property(i => i.Name).IsRequired();
+				entity.HasOne(i => i.Recipe).WithMany(r => r.Ingredients);
+				entity.HasOne(i => i.Unit).WithMany(iu => iu.Ingredients);
 			});
 			modelBuilder.Entity<User>(entity =>
 			{
 				entity.HasKey(u => u.ID);
-				//entity.Property(u => u.Name).IsRequired();
+				entity.Property(u => u.Name).IsRequired();
 			});
 		}
 	}
