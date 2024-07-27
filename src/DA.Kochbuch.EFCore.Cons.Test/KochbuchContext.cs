@@ -8,6 +8,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 	/// <ChangeLog>
 	/// <Create Datum="27.07.2024" Entwickler="DA" />
 	/// </ChangeLog>
+	/// <see href="https://dev.mysql.com/doc/connector-net/en/connector-net-entityframework-core-example.html"/>
 	public class KochbuchContext : DbContext
 	{
 		public DbSet<Recipe> Recipes { get; set; }
@@ -33,6 +34,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			{
 				entity.HasKey(r => r.ID);
 				entity.Property(r => r.CookInstructon).IsRequired();
+				entity.HasOne(r => r.User).WithMany(u => u.Recipes);
 			});
 			modelBuilder.Entity<Ingredient>(entity =>
 			{
@@ -40,6 +42,11 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 				entity.Property(i => i.Name).IsRequired();
 				entity.HasOne(i => i.Recipe).WithMany(r => r.Ingredients);
 				entity.HasOne(i => i.Unit).WithMany(iu => iu.Ingredients);
+			});
+			modelBuilder.Entity<User>(entity =>
+			{
+				entity.HasKey(u => u.ID);
+				entity.Property(u => u.Name).IsRequired();
 			});
 		}
 	}
