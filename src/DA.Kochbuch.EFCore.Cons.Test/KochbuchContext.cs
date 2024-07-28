@@ -1,7 +1,7 @@
-﻿using DA.Kochbuch.Model.UnitsTypes;
-using DA.Kochbuch.Model;
+﻿using DA.Kochbuch.Model;
+using DA.Kochbuch.Model.Authorization;
+using DA.Kochbuch.Model.UnitsTypes;
 using Microsoft.EntityFrameworkCore;
-using MySql.EntityFrameworkCore.Extensions;
 
 namespace DA.Kochbuch.EFCore.Cons.Test
 {
@@ -15,6 +15,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 		public DbSet<Ingredient> Ingredients { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<IngredientUnit> Units { get; set; }
+		public DbSet<AccessToken> AccessTokens { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -51,6 +52,11 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 				entity.HasKey(u => u.ID);
 				entity.Property(u => u.Name).IsRequired();
 				entity.HasMany(u => u.OwnRecipes).WithOne(r=>r.User);
+			});
+			modelBuilder.Entity<AccessToken>(entity =>
+			{
+				entity.HasKey(at => at.ID);
+				entity.Property(at=>at.Lifetime).IsRequired();
 			});
 		}
 	}
