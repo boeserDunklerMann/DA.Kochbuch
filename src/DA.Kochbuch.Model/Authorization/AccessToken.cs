@@ -30,6 +30,7 @@ namespace DA.Kochbuch.Model.Authorization
 		}
 		public AccessToken()
 		{
+			ID = Guid.NewGuid();
 			Lifetime = TimeSpan.FromMinutes(30);	// TODO AD: get this from cfg
 		}
 	}

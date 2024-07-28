@@ -1,4 +1,5 @@
 ﻿using DA.Kochbuch.Model;
+using DA.Kochbuch.Model.Authorization;
 using DA.Kochbuch.Model.UnitsTypes;
 using System.Data.Entity;
 
@@ -20,92 +21,90 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 
 		static void InsertData()
 		{
-			using KochbuchContext ctx = new KochbuchContext();
+			using KochbuchContext ctx = new KochbuchContext("Server=192.168.2.108;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;");
 			ctx.Database.EnsureCreated();   // create DB if not exists
-			
+
 			// add units
-			IngredientUnit unit = new IngredientUnit() { ID = 1, Name = "kg" };
+			IngredientUnit unit = BaseModel.Create<IngredientUnit>("kg"); //{ ID = 1, Name = "kg" };
 			ctx.Units.Add(unit);
-			ctx.Units.AddRange([new IngredientUnit() { ID = 2, Name = "g" },
-				new IngredientUnit(){ID=3, Name = "Stk"},
-				new IngredientUnit(){ID=4, Name="Msp"},
-				new IngredientUnit(){ID=5, Name="n.B."}
+			ctx.Units.AddRange([BaseModel.Create<IngredientUnit>("g"),
+				BaseModel.Create<IngredientUnit>("Stk"),
+				BaseModel.Create<IngredientUnit>("Msp"),
+				BaseModel.Create<IngredientUnit>("n.B.")
 			]);
-			
+			ctx.SaveChanges();
+
 			// add ingredients
-			Ingredient i1 = new Ingredient()
-			{
-				ID = 1,
-				Amount = 500,
-				Unit = unit,
-				Name = "Mehl",
-				ChangeDate = DateTime.Now
-			};
+			Ingredient i1 = BaseModel.Create<Ingredient>("Mehl");
+			i1.Amount = 500;
+			i1.Unit = unit;
+			Ingredient i2 = BaseModel.Create<Ingredient>("Ei");
+			i2.Amount = 2;
+			i2.Unit = unit;
 			ctx.Ingredients.Add(i1);
+			ctx.Ingredients.Add(i2);
+			ctx.SaveChanges();
 
 			// add recipe
-			/* this must fail - missing instructions */
-			Recipe r = new Recipe()
-			{
-				ID = 1,
-				Name = "Kartoffelsuppe",
-				NumberPersons = 3,
-				CookInstructon = "abc"
-			};
+			Recipe r = BaseModel.Create<Recipe>("Kartoffelsuppe");
+			r.NumberPersons = 3;
+			r.CookInstructon = "abc";
+			r.ChangeDate = DateTime.UtcNow;
 			ctx.Recipes.Add(r);
+//			ctx.SaveChanges();
 
 			// create user
-			User user = new User()
-			{
-				ID = 1,
-				Name = "André",
-				ChangeDate = DateTime.Now
-			};
-			ctx.Users.Add(user);
+			User user1 = BaseModel.Create<User>("André");
+			User user2 = BaseModel.Create<User>("Die Süße vom Fristo");
+			ctx.Users.Add(user1);
+			ctx.Users.Add(user2);
 
 			// assign user to recipe
-			r.User = user;
-			r.Ingredients.Add(i1);
+			r.User = user1;
+			ctx.SaveChanges();
 
+			// create a number of access Tokens
+			Random rand = new Random();
+			int max = rand.Next(100);
+			for (int i = 0; i < max; i++)
+			{
+				AccessToken token = BaseModel.Create<AccessToken>($"AT #{i.ToString("000")}");
+				ctx.AccessTokens.Add(token);
+			}
 			// save
+			ctx.SaveChanges();
+			ctx.Ingredients.ToList().ForEach(r.Ingredients.Add);
 			ctx.SaveChanges();
 		}
 
 		static void ReadData()
 		{
-			using (KochbuchContext ctx = new KochbuchContext())
+			using (KochbuchContext ctx = new KochbuchContext("Server=192.168.2.108;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;"))
 			{
-				// TODO: durch das Laen der Rezepte, haben die User dann auch ihre Rezepte bekommen (Z66).
+				// TODO: durch das Laden der Rezepte, haben die User dann auch ihre Rezepte bekommen (Z73).
 				// unschön, aber ein Workaround, den ich zufällig rausbekommen habe.
 				var _ = ctx.Units.ToList();
 				ctx.Ingredients.ToList();
 				var recipes = ctx.Recipes.Include(r => r.User).ToList();
-				var users = ctx.Users.Include("Recipes").ToList();	// jetzt haben die Rezepte auch User
+				var users = ctx.Users.Include("Recipes").ToList();  // jetzt haben die Rezepte auch User
+				users.ForEach(user =>
+				{
+					Console.WriteLine(user.Name);
+					user.OwnRecipes?.ToList().ForEach(recipe =>
+					{
+						Console.WriteLine("\t" + recipe.Name);
+						recipe.Ingredients.ToList().ForEach(i => Console.WriteLine("\t\t" + i.Name));
+					});
+				});
 
 				// TODO: Das ist zwar umständlich aber funktioniert!
-				var firstUser = ctx.Users.First();
-				ctx.Entry(firstUser)
-					.Collection(u => u.OwnRecipes).Load();
-				Console.WriteLine(firstUser.Name);
-				foreach(var recipe in firstUser.OwnRecipes)
-				{
-                    Console.WriteLine(recipe.Name);
-                }
-
-				//foreach(var user in users)
+				//var firstUser = ctx.Users.First();
+				//ctx.Entry(firstUser)
+				//	.Collection(u => u.OwnRecipes).Load();
+				//Console.WriteLine(firstUser.Name);
+				//foreach(var recipe in firstUser.OwnRecipes)
 				//{
-				//	Console.WriteLine(user.Name);
-				//	foreach(var recipe in user.Recipes)
-				//	{
-    //                    Console.WriteLine(recipe.Name);
-    //                }
-				//}
-
-				//var r = ctx.Recipes.Find(1);
-				//foreach(Recipe recipe in recipes)
-				//{
-				//	Console.WriteLine($"title: {recipe.Name}");
-				//	Console.WriteLine($"owner: {recipe.User.Name}");
+    //                Console.WriteLine(recipe.Name);
     //            }
 			}
 		}

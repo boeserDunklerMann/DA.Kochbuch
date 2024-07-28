@@ -9,7 +9,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 	/// <Create Datum="27.07.2024" Entwickler="DA" />
 	/// </ChangeLog>
 	/// <see href="https://dev.mysql.com/doc/connector-net/en/connector-net-entityframework-core-example.html"/>
-	public class KochbuchContext : DbContext
+	public class KochbuchContext(string connectionString) : DbContext
 	{
 		public DbSet<Recipe> Recipes { get; set; }
 		public DbSet<Ingredient> Ingredients { get; set; }
@@ -20,9 +20,9 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
-			//optionsBuilder.UseMySQL("Server=localhost;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;");	// MariaDB 11+ doesnt work because of nullable PKs?
+			// MariaDB 11+ doesnt work because of nullable PKs?
 			optionsBuilder
-				.UseMySQL("Server=192.168.2.108;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;");	// captaintrips with Mariadb 10
+				.UseMySQL(connectionString);	// captaintrips with Mariadb 10
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
