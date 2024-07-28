@@ -80,7 +80,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 		{
 			using (KochbuchContext ctx = new KochbuchContext("Server=192.168.2.108;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;"))
 			{
-				// TODO: durch das Laden der Rezepte, haben die User dann auch ihre Rezepte bekommen (Z89).
+				// TODO: durch das Laden der Rezepte, haben die User dann auch ihre Rezepte bekommen (Z88).
 				// unschön, aber ein Workaround, den ich zufällig rausbekommen habe.
 				var _ = ctx.Units.ToList();
 				ctx.Ingredients.ToList();
