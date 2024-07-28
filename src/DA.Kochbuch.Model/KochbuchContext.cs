@@ -1,9 +1,8 @@
-﻿using DA.Kochbuch.Model;
-using DA.Kochbuch.Model.Authorization;
+﻿using DA.Kochbuch.Model.Authorization;
 using DA.Kochbuch.Model.UnitsTypes;
 using Microsoft.EntityFrameworkCore;
 
-namespace DA.Kochbuch.EFCore.Cons.Test
+namespace DA.Kochbuch.Model
 {
 	/// <ChangeLog>
 	/// <Create Datum="27.07.2024" Entwickler="DA" />

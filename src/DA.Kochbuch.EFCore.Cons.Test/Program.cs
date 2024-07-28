@@ -1,7 +1,6 @@
 ﻿using DA.Kochbuch.Model;
 using DA.Kochbuch.Model.Authorization;
 using DA.Kochbuch.Model.UnitsTypes;
-using System.Data.Entity;
 
 namespace DA.Kochbuch.EFCore.Cons.Test
 {
@@ -85,8 +84,8 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 				// unschön, aber ein Workaround, den ich zufällig rausbekommen habe.
 				var _ = ctx.Units.ToList();
 				ctx.Ingredients.ToList();
-				var recipes = ctx.Recipes.Include(r => r.User).ToList();
-				var users = ctx.Users.Include("Recipes").ToList();  // jetzt haben die Rezepte auch User
+				var recipes = ctx.Recipes.ToList();
+				var users = ctx.Users/*.Include("Recipes")*/.ToList();  // jetzt haben die Rezepte auch User
 				users.ForEach(user =>
 				{
 					Console.WriteLine(user.Name);

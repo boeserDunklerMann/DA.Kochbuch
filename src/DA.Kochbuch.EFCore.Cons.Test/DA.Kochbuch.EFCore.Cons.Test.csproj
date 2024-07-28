@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DA.Kochbuch.Model\DA.Kochbuch.Model.csproj" />
   </ItemGroup>
 
