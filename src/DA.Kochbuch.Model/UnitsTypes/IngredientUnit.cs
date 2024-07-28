@@ -9,16 +9,14 @@
 	/// <example>
 	/// gram, Stk, Msp, ...
 	/// </example>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable. AD: Darum kümmert sich EFCore
 	public class IngredientUnit : BaseModel
 	{
 		public virtual ICollection<Ingredient> Ingredients { get; set; }
-        public IngredientUnit()
-        {
-			ChangeDate = DateTime.Now;
-        }
-        public override void PopulateMyID()
+		public IngredientUnit()
 		{
-			throw new NotImplementedException();
-		}
+			CreationDate = ChangeDate = DateTime.UtcNow;
+        }
 	}
 }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

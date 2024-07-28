@@ -1,4 +1,5 @@
 ﻿using DA.Kochbuch.Model.UnitsTypes;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable. AD: Darum kümmert sich EFCore
 
 namespace DA.Kochbuch.Model
 {
@@ -15,3 +16,4 @@ namespace DA.Kochbuch.Model
 		public virtual Recipe Recipe { get; set; }
 	}
 }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
