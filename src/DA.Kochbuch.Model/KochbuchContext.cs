@@ -22,7 +22,13 @@ namespace DA.Kochbuch.Model
 			// MariaDB 11+ doesnt work because of nullable PKs?
 			optionsBuilder
 				.UseMySQL(connectionString);    // captaintrips with Mariadb 10
-			this.SavingChanges += OnSavingChanges;
+												//this.SavingChanges += OnSavingChanges;
+			this.ChangeTracker.StateChanged += OnStateChanged;
+		}
+
+		private void OnStateChanged(object? sender, Microsoft.EntityFrameworkCore.ChangeTracking.EntityStateChangedEventArgs e)
+		{
+			// TODO AD: https://learn.microsoft.com/de-de/ef/core/logging-events-diagnostics/events
 		}
 
 		private void OnSavingChanges(object? sender, SavingChangesEventArgs e)
