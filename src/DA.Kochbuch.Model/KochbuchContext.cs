@@ -16,14 +16,14 @@ namespace DA.Kochbuch.Model
 		public DbSet<IngredientUnit> Units { get; set; }
 		public DbSet<AccessToken> AccessTokens { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			// https://stackoverflow.com/questions/74060289/mysqlconnection-open-system-invalidcastexception-object-cannot-be-cast-from-d
 			// MariaDB 11+ doesnt work because of nullable PKs?
 			optionsBuilder
 				.UseMySQL(connectionString);    // captaintrips with Mariadb 10
-												//this.SavingChanges += OnSavingChanges;
-			this.ChangeTracker.StateChanged += OnStateChanged;
+			//this.SavingChanges += OnSavingChanges;
+			//this.ChangeTracker.StateChanged += OnStateChanged;
 		}
 
 		private void OnStateChanged(object? sender, Microsoft.EntityFrameworkCore.ChangeTracking.EntityStateChangedEventArgs e)

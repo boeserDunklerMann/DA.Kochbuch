@@ -1,0 +1,6 @@
+@DA.Kochbuch.WebAPI_HostAddress = http://localhost:5215
+
+GET {{DA.Kochbuch.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
