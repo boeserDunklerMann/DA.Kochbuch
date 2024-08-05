@@ -8,6 +8,7 @@ namespace DA.Kochbuch.WebAPI.Controllers
 	/// <ChangeLog>
 	/// <Create Datum="29.07.2024" Entwickler="DA" />
 	/// <Change Datum="05.08.2024" Entwickler="DA">VerifyAccessToken added</Change>
+	/// <Change Datum="05.08.2024" Entwickler="DA">CheckContext added</Change>
 	/// </ChangeLog>
 	/// <summary>
 	/// base controller with DBContext
@@ -40,8 +41,7 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		/// </summary>
 		protected async Task<bool> VerifyAccessToken(Guid token, bool throwExceptionIfFailed)
 		{
-			if (KochbuchContext == null)
-				throw new NullReferenceException(nameof(KochbuchContext));
+			CheckContext();
 			AccessToken? accessToken = await KochbuchContext.AccessTokens.FirstAsync(at => !at.Deleted && at.ID.Equals(token));
 			if (accessToken == null)
 			{
@@ -53,6 +53,16 @@ namespace DA.Kochbuch.WebAPI.Controllers
 			}
 			return accessToken.IsValid;
 		}
+
+		/// <ChangeLog>
+		/// <Create Datum="05.08.2024" Entwickler="DA" />
+		/// </ChangeLog>
+		protected void CheckContext()
+		{
+			if (KochbuchContext == null)
+				throw new NullReferenceException(nameof(KochbuchContext));
+		}
+
 		public void Dispose()
 		{
 			if (KochbuchContext != null)
