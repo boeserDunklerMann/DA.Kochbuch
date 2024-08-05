@@ -1,10 +1,13 @@
 ﻿using DA.Kochbuch.Model;
+using DA.Kochbuch.Model.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DA.Kochbuch.WebAPI.Controllers
 {
 	/// <ChangeLog>
 	/// <Create Datum="29.07.2024" Entwickler="DA" />
+	/// <Change Datum="05.08.2024" Entwickler="DA">VerifyAccessToken added</Change>
 	/// </ChangeLog>
 	/// <summary>
 	/// base controller with DBContext
@@ -28,6 +31,27 @@ namespace DA.Kochbuch.WebAPI.Controllers
 				throw new ApplicationException("connectionstring not found");
 			}
 			KochbuchContext = new KochbuchContext(connString);
+		}
+
+		/// <ChangeLog>
+		/// <Create Datum="05.08.2024" Entwickler="DA" />
+		/// </ChangeLog>
+		/// <summary>
+		/// </summary>
+		protected async Task<bool> VerifyAccessToken(Guid token, bool throwExceptionIfFailed)
+		{
+			if (KochbuchContext == null)
+				throw new NullReferenceException(nameof(KochbuchContext));
+			AccessToken? accessToken = await KochbuchContext.AccessTokens.FirstAsync(at => !at.Deleted && at.ID.Equals(token));
+			if (accessToken == null)
+			{
+				if (throwExceptionIfFailed)
+				{
+					throw new Exceptions.AuthorizationException($"Token {token.ToString()} could not be authorized.");
+				}
+				return false;
+			}
+			return accessToken.IsValid;
 		}
 		public void Dispose()
 		{

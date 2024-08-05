@@ -25,7 +25,8 @@ namespace DA.Kochbuch.Model.Authorization
 		{
 			get
 			{
-				return (CreationDate+Lifetime)<DateTime.UtcNow;
+				//return (CreationDate+Lifetime)<DateTime.UtcNow; // TODO: das hier sauber machen. Mit LastLoginDate oder sowas
+				return true;
 			}
 		}
 		public AccessToken()
