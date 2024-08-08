@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DA.Kochbuch.WebAPI.Controllers
 {
+	[Route("api/[controller]")]
 	[ApiController]
-	[Route("Authorization")]
 	/// <ChangeLog>
 	/// <Create Datum="29.07.2024" Entwickler="DA" />
 	/// </ChangeLog>
@@ -21,7 +21,6 @@ namespace DA.Kochbuch.WebAPI.Controllers
 
 		#region CRUD-ops
 		[HttpPost]
-		[Route("AccessToken")]
 		public async Task<AccessToken> CreateTokenAsync(string username, string password)
 		{
 			Logger.LogInformation($"running {nameof(CreateTokenAsync)}");
@@ -35,7 +34,6 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		}
 
 		[HttpGet]
-		[Route("AccessToken")]
 		public async Task<IEnumerable<AccessToken>> GetAllTokensAsync()
 		{
 			Logger.LogInformation($"running {nameof(GetAllTokensAsync)}");
@@ -44,24 +42,7 @@ namespace DA.Kochbuch.WebAPI.Controllers
 			return await KochbuchContext.AccessTokens.Where(t=>!t.Deleted).ToListAsync();
 		}
 
-		[HttpDelete]
-		[Route("AccessToken")]
-		public async Task DeleteTokenAsync(AccessToken token)
-		{
-			Logger.LogInformation($"running {nameof(DeleteTokenAsync)}");
-			if (KochbuchContext == null)
-				throw new NullReferenceException(nameof(KochbuchContext));
-			AccessToken? tokenDb = await KochbuchContext.AccessTokens
-				.FirstOrDefaultAsync(t=>t.ID == token.ID && !t.Deleted);
-			if (tokenDb == null)
-				throw new Exceptions.ObjectNotFoundException(nameof(AccessToken), token.ID);
-			tokenDb.Deleted = true;
-			tokenDb.ChangeDate = DateTime.UtcNow;
-			await KochbuchContext.SaveChangesAsync();
-		}
-
 		[HttpPut]
-		[Route(nameof(AccessToken))]
 		public async Task UpdateTokenAsync(AccessToken token)
 		{
 			Logger.LogInformation($"running {nameof(UpdateTokenAsync)}");
@@ -73,6 +54,29 @@ namespace DA.Kochbuch.WebAPI.Controllers
 				throw new Exceptions.ObjectNotFoundException(nameof(AccessToken), token.ID);
 			tokenDb.ChangeDate = DateTime.UtcNow;
 			await KochbuchContext.SaveChangesAsync();
+		}
+
+		[HttpDelete]
+		public async Task DeleteTokenAsync(AccessToken token)
+		{
+			Logger.LogInformation($"running {nameof(DeleteTokenAsync)}");
+			await DeleteTokenByIDAsync(token.ID);
+		}
+
+		[HttpDelete]
+		[Route("{accessTokenID}")]
+		public async Task<IActionResult> DeleteTokenByIDAsync(Guid accessTokenID)
+		{
+			Logger.LogInformation($"running {nameof(DeleteTokenByIDAsync)}");
+			CheckContext();
+			AccessToken? tokenDb = await KochbuchContext.AccessTokens
+				.FirstOrDefaultAsync(t => t.ID.Equals(accessTokenID) && !t.Deleted);
+			if (tokenDb == null)
+				throw new Exceptions.ObjectNotFoundException(nameof(AccessToken), accessTokenID);
+			tokenDb.Deleted = true;
+			tokenDb.ChangeDate = DateTime.UtcNow;
+			await KochbuchContext.SaveChangesAsync();
+			return Ok(tokenDb);
 		}
 		#endregion
 	}

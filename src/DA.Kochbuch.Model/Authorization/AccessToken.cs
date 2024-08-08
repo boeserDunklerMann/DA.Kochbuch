@@ -6,7 +6,7 @@ namespace DA.Kochbuch.Model.Authorization
 	/// <Create Datum="28.07.2024" Entwickler="DA" />
 	/// </ChangeLog>
 	/// <summary>
-	/// Class for ddealing with access tokens for Rest-API
+	/// Class for dealing with access tokens for Rest-API
 	/// </summary>
 	public class AccessToken : BaseModel
 	{
@@ -17,18 +17,11 @@ namespace DA.Kochbuch.Model.Authorization
 		/// </summary>
 		[NotMapped]
 		public TimeSpan Lifetime { get; private set; }
-		
+
 		/// <summary>
 		/// Determines whether a token is still valid
 		/// </summary>
-		public bool IsValid
-		{
-			get
-			{
-				//return (CreationDate+Lifetime)<DateTime.UtcNow; // TODO: das hier sauber machen. Mit LastLoginDate oder sowas
-				return true;
-			}
-		}
+		public bool IsValid => (ChangeDate + Lifetime) > DateTime.UtcNow;
 		public AccessToken()
 		{
 			ID = Guid.NewGuid();

@@ -42,7 +42,7 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		protected async Task<bool> VerifyAccessToken(Guid token, bool throwExceptionIfFailed)
 		{
 			CheckContext();
-			AccessToken? accessToken = await KochbuchContext.AccessTokens.FirstAsync(at => !at.Deleted && at.ID.Equals(token));
+			AccessToken? accessToken = await KochbuchContext.AccessTokens.FirstOrDefaultAsync(at => !at.Deleted && at.ID.Equals(token));
 			if (accessToken == null)
 			{
 				if (throwExceptionIfFailed)
@@ -51,6 +51,8 @@ namespace DA.Kochbuch.WebAPI.Controllers
 				}
 				return false;
 			}
+			accessToken.ChangeDate = DateTime.UtcNow;
+			await KochbuchContext.SaveChangesAsync();
 			return accessToken.IsValid;
 		}
 
