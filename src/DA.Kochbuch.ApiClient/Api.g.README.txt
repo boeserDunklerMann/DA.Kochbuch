@@ -1,0 +1,6 @@
+﻿after generating Api.g.cs file with NSwagStudio 14.1+
+add following usings in generated file:
+	using DA.Kochbuch.Model;
+	using DA.Kochbuch.Model.Authorization;
+	using DA.Kochbuch.Model.UnitsTypes;
+	using System = global::System;
