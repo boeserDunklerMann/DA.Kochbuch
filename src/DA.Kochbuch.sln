@@ -9,9 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DA.Kochbuch.EFCore.Cons.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DA.Kochbuch.WebAPI", "DA.Kochbuch.WebAPI\DA.Kochbuch.WebAPI.csproj", "{4452B526-864C-49D7-A821-B2020569E6D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Kochbuch.ApiClient", "DA.Kochbuch.ApiClient\DA.Kochbuch.ApiClient.csproj", "{82AD8264-3EEC-4B09-B3F7-048178ECEBE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DA.Kochbuch.ApiClient", "DA.Kochbuch.ApiClient\DA.Kochbuch.ApiClient.csproj", "{82AD8264-3EEC-4B09-B3F7-048178ECEBE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Kochbuch.ApiClient.Cons.Test", "DA.Kochbuch.ApiClient.Cons.Test\DA.Kochbuch.ApiClient.Cons.Test.csproj", "{989647F6-A014-40B2-9375-D06E3BBF822F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DA.Kochbuch.ApiClient.Cons.Test", "DA.Kochbuch.ApiClient.Cons.Test\DA.Kochbuch.ApiClient.Cons.Test.csproj", "{989647F6-A014-40B2-9375-D06E3BBF822F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maui", "Maui", "{C84889F8-DFC3-4AA1-B18B-7F151405F10A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Kochbuch.App", "Maui\DA.Kochbuch.App\DA.Kochbuch.App.csproj", "{AF26E22D-DA54-4CAE-9274-8A7A9853F399}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +43,18 @@ Global
 		{989647F6-A014-40B2-9375-D06E3BBF822F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{989647F6-A014-40B2-9375-D06E3BBF822F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{989647F6-A014-40B2-9375-D06E3BBF822F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF26E22D-DA54-4CAE-9274-8A7A9853F399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF26E22D-DA54-4CAE-9274-8A7A9853F399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF26E22D-DA54-4CAE-9274-8A7A9853F399}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AF26E22D-DA54-4CAE-9274-8A7A9853F399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF26E22D-DA54-4CAE-9274-8A7A9853F399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF26E22D-DA54-4CAE-9274-8A7A9853F399}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AF26E22D-DA54-4CAE-9274-8A7A9853F399} = {C84889F8-DFC3-4AA1-B18B-7F151405F10A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A27A1695-1147-422A-9217-A02DA9105E19}
