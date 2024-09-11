@@ -28,3 +28,10 @@ Der übliche WinForms-like-CodeBehind-Quatsch, welcher unbedingt vermieden werde
 # MauiProgram.cs
 Der Einstiegspunkt einer MAUI App, dieser wird vom plattformspezifischen Code unter `Platforms/<PlatformName>/...` ziemlich am Ende aufgerufen. Dort wird die Methode `CreateMauiApp` aufgerufen.
 ![MAUI Application startup flow](https://learn.microsoft.com/de-de/training/dot-net-maui/build-mobile-and-desktop-apps/media/3-startup-flow.png "MAUI Application startup flowchart")
+# Projektressourcen
+- schau dir die `.csproj` Datei mal genauer an:
+	- unter `//Project/PropertyGroup/` sind die Zielplattform(frameworks) des Projekts definiert.
+	- sowie das übliche (wie App-Titel, ID, Version, Supported-OS, etc.)
+- im Ordner `Resources` kannst du beliebige Ressourcen hinzufügen, die die App benötigt
+## Fonts
+- hinzugefügte Fonts müssen in `CreateMauiApp` registriert werden.
