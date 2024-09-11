@@ -18,3 +18,8 @@ merged die `/Resources/Styles/..` Files in ein resourceDictionary
 	- Flyout-Navigation
 	- Registerkarten für d. Stammverzeichnis der App
 - die Standardvorlage stellt eine einzelne Seite (bzw. `ShellContent`) bereit, die beim App-Start vergrößert wird
+# MainPage.xaml
+- enthält die Definition der UI
+- die Verwendung dieser XAML wird in `AppShell.xaml` bestimmt (Zeile 12)
+# MainPage.xaml.cs
+Der übliche WinForms-like-CodeBehind-Quatsch, welcher unbedingt vermieden werden soll.
