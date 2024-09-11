@@ -27,6 +27,8 @@ merged die `/Resources/Styles/..` Files in ein resourceDictionary
 Der übliche WinForms-like-CodeBehind-Quatsch, welcher unbedingt vermieden werden soll.
 # MauiProgram.cs
 Der Einstiegspunkt einer MAUI App, dieser wird vom plattformspezifischen Code unter `Platforms/<PlatformName>/...` ziemlich am Ende aufgerufen. Dort wird die Methode `CreateMauiApp` aufgerufen.
+
+Hier wird die App konfiguriert (bzgl. Fonts, DI, Services, etc.).
 ![MAUI Application startup flow](https://learn.microsoft.com/de-de/training/dot-net-maui/build-mobile-and-desktop-apps/media/3-startup-flow.png "MAUI Application startup flowchart")
 # Projektressourcen
 - schau dir die `.csproj` Datei mal genauer an:
