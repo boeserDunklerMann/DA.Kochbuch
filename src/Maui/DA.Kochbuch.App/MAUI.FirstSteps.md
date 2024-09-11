@@ -5,11 +5,16 @@ merged die `/Resources/Styles/..` Files in ein resourceDictionary
 - Erstellt die Anwendung zur Laufzeit
 - ctor erstellt ein erstes Fenster und weist dies der Property `MainPage` zu
 	- diese bestimmt, welche Seite zum App-Start angezeigt wird
-	- man kann plattformneutrale Anwendungslebenszyklus-Eventhandler überschreiben, die a wären:
+	- man kann plattformneutrale Anwendungslebenszyklus-Eventhandler überschreiben, die da wären:
 		- `OnStart`
 		- `OnResume`
 		- `OnSleep`
 	- definiert sind die in der `Application`-baseclass
 # AppShell.xaml
-- Ist die Hauptstruktur einer .NET MAUI App
-- 
+- Ist die Hauptstruktur/`Shell` einer .NET MAUI App
+- diese bietet Konfig.-Möglichkeiten bspw. für:
+	- URI-based Navigation
+	- Layout
+	- Flyout-Navigation
+	- Registerkarten für d. Stammverzeichnis der App
+- die Standardvorlage stellt eine einzelne Seite (bzw. `ShellContent`) bereit, die beim App-Start vergrößert wird
