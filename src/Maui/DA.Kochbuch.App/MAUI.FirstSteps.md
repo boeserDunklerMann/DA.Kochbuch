@@ -23,3 +23,5 @@ merged die `/Resources/Styles/..` Files in ein resourceDictionary
 - die Verwendung dieser XAML wird in `AppShell.xaml` bestimmt (Zeile 12)
 # MainPage.xaml.cs
 Der übliche WinForms-like-CodeBehind-Quatsch, welcher unbedingt vermieden werden soll.
+# MauiProgram.cs
+Der Einstiegspunkt einer MAUI App, dieser wird vom plattformspezifischen Code unter `Platforms/<PlatformName>/...` ziemlich am Ende aufgerufen. Dort wird die Methode `CreateMauiApp` aufgerufen.
