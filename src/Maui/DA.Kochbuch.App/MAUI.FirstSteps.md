@@ -1,4 +1,6 @@
-﻿# App.xaml
+﻿Für Details siehe [hier](https://learn.microsoft.com/de-de/training/modules/build-mobile-and-desktop-apps/3-create-a-maui-project-visual-studio)
+
+# App.xaml
 merged die `/Resources/Styles/..` Files in ein resourceDictionary
 
 # App.xaml.cs
