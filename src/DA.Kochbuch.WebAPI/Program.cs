@@ -6,7 +6,7 @@ namespace DA.Kochbuch.WebAPI
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
-			builder.Configuration.AddJsonFile("appsettings.local.json");    // there is th connstring will not be committed to git
+			builder.Configuration.AddJsonFile("appsettings.local.json", optional: true);    // there is th connstring will not be committed to git
 			
 			// Add services to the container.
 

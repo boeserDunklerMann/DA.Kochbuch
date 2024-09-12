@@ -3,7 +3,7 @@ Descrription=DA.Kochbuch.WebAPI service
 
 [Service]
 workingDirectory=/opt/DA.Kochbuch.WebAPI
-ExecStart=/usr/share/aspnet8.0/dotnet /opt/DA.Kochbuch.WebAPI/DA.Kochbuch.WebAPI.dll
+ExecStart=/usr/share/aspnet8.0/dotnet /opt/DA.Kochbuch.WebAPI/DA.Kochbuch.WebAPI.dll --urls=http://0.0.0.0:5215/
 Restart=always
 # Restart service after 10 seconds if dotnet service crashes
 RestartSec=10
