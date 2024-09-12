@@ -37,3 +37,6 @@ Hier wird die App konfiguriert (bzgl. Fonts, DI, Services, etc.).
 - im Ordner `Resources` kannst du beliebige Ressourcen hinzufügen, die die App benötigt
 ## Fonts
 - hinzugefügte Fonts müssen in `CreateMauiApp` registriert werden.
+
+# Erster Start unter Android-Emulator
+Guck [hier mitte etwa](https://learn.microsoft.com/de-de/training/modules/build-mobile-and-desktop-apps/4-exercise-create-your-first-maui-app)

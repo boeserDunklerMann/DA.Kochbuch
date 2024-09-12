@@ -13,7 +13,7 @@ namespace DA.Kochbuch.App.MVVM
 	/// <ChangeLog>
 	/// <Create Datum="26.08.2024" Entwickler="DA" />
 	/// </ChangeLog>
-	/// <see cref="https://learn.microsoft.com/de-de/dotnet/maui/xaml/fundamentals/data-binding-basics?view=net-maui-8.0"/>
+	/// https://learn.microsoft.com/de-de/dotnet/maui/xaml/fundamentals/data-binding-basics?view=net-maui-8.0
 	public class MainVM : INotifyPropertyChanged, IDisposable
 	{
 		#region private fields
@@ -41,7 +41,7 @@ namespace DA.Kochbuch.App.MVVM
 			http = new HttpClient();
 			api = new ApiClient.Client("http://localhost:5215/", http); // TODO DA: from cfg
 			_units = new ObservableCollection<Model.UnitsTypes.IngredientUnit>();
-			LoadDataAsync();
+			LoadDataAsync().Wait();
 		}
 
 		public void Dispose()
