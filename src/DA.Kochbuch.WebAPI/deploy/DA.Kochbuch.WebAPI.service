@@ -1,0 +1,16 @@
+[Unit]
+Descrription=DA.Kochbuch.WebAPI service
+
+[Service]
+workingDirectory=/opt/DA.Kochbuch.WebAPI
+ExecStart=dotnet /opt/DA.Kochbuch.WebAPI/DA.Kochbuch.WebAPI.dll
+Restart=always
+# Restart service after 10 seconds if dotnet service crashes
+RestartSec=10
+SyslogIdentifier=DA_Kochbuch_WebAPI_service
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target
+
+# copy this file to /etc/systemd/DA.Kochbuch.WebAPI.service
