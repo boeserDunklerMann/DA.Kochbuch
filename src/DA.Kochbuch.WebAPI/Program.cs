@@ -7,6 +7,7 @@ namespace DA.Kochbuch.WebAPI
 		{
 			var builder = WebApplication.CreateBuilder(args);
 			builder.Configuration.AddJsonFile("appsettings.local.json", optional: true);    // there is th connstring will not be committed to git
+			// https://stackoverflow.com/questions/45867213/net-core-how-to-addjsonfile-with-specific-path
 			
 			// Add services to the container.
 
