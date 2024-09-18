@@ -20,10 +20,15 @@
 			<Button Text="Load data"
 				Command="{Binding LoadDataCommand}" />
 
-			<ListView ItemsSource="{Binding Units}">
+			<Label
+				Text="alle Rezepte"
+				Style="{StaticResource Headline}"
+				SemanticProperties.HeadingLevel="Level3" />
+			
+			<ListView ItemsSource="{Binding Recipes}" SelectedItem="{Binding SelectedRecipe}">
 				<ListView.ItemTemplate>
 					<DataTemplate>
-						<Label Text="{Binding Name}" Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level2"/>
+						<Label Text="{Binding Name}" Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level2" />
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>

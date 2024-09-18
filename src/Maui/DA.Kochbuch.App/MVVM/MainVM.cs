@@ -7,20 +7,23 @@ using System.Text;
 using System.Threading.Tasks;
 using DA.Kochbuch.Model;
 using DA.Kochbuch.Model.Authorization;
+using DA.Kochbuch.App.MVVM.Extension;
 
 namespace DA.Kochbuch.App.MVVM
 {
 	/// <ChangeLog>
 	/// <Create Datum="26.08.2024" Entwickler="DA" />
-	/// </ChangeLog>
-	/// https://learn.microsoft.com/de-de/dotnet/maui/xaml/fundamentals/data-binding-basics?view=net-maui-8.0
+	/// <Change Datum="18.09.2024" Entwickler="DA">Recipes added</Change>
+		/// </ChangeLog>
+		/// https://learn.microsoft.com/de-de/dotnet/maui/xaml/fundamentals/data-binding-basics?view=net-maui-8.0
 	public class MainVM : INotifyPropertyChanged, IDisposable
 	{
 		#region private fields
 		private HttpClient? http;
 		private ApiClient.Client? api;
-		private ObservableCollection<Model.UnitsTypes.IngredientUnit> _units;
 		private AccessToken? _token;
+		private ObservableCollection<Model.UnitsTypes.IngredientUnit> _units;
+		private ObservableCollection<Model.Recipe> _recipes;
 		#endregion
 
 		public event PropertyChangedEventHandler? PropertyChanged;
@@ -35,6 +38,21 @@ namespace DA.Kochbuch.App.MVVM
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Units)));
 			}
 		}
+
+		public ObservableCollection<Recipe> Recipes
+		{
+			get => _recipes;
+			set
+			{
+				_recipes = value;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Recipes)));
+			}
+		}
+		public Recipe? SelectedRecipe
+		{
+			get;
+			set;
+		} = null;
 		#endregion
 
 		public MainVM()
@@ -42,7 +60,7 @@ namespace DA.Kochbuch.App.MVVM
 			http = new HttpClient();
 			api = new ApiClient.Client("http://192.168.2.108:5002/", http); // TODO DA: from cfg
 			_units = new ObservableCollection<Model.UnitsTypes.IngredientUnit>();
-			//LoadDataAsync();
+			_recipes = new ObservableCollection<Recipe>();
 		}
 
 		public void Dispose()
@@ -73,11 +91,21 @@ namespace DA.Kochbuch.App.MVVM
 		private async void LoadDataAsync()
 		{
 			AccessToken token = await GetAccessTokenAsync();
-			var units = await api.IngredientUnitAsync(token.ID);
-			if (units != null)
+			if (token != null && token.IsValid)
 			{
-				_units.Clear();
-				units.ToList().ForEach(u => _units.Add(u));
+				var units = await api.IngredientUnitAsync(token.ID);
+				if (units != null)
+				{
+					_units.Clear();
+					units.ToList().ForEach(u => _units.Add(u));
+				}
+
+				var recipes = await api.RecipeAllAsync(token.ID);
+				if (recipes != null && recipes.Any())
+				{
+					_recipes.Clear();
+					_recipes.AddRange(recipes);
+				}
 			}
 		}
 		#endregion
