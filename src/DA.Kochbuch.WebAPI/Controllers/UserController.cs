@@ -33,6 +33,8 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		{
 			Logger.LogInformation($"running {nameof(GetAllUsersAsync)}");
 			await VerifyUserAsync(username, password, true);
+			// TODO DA: unschöner workaround
+			KochbuchContext.Recipes.ToList();
 
 			return await KochbuchContext.Users.Where(u => !u.Deleted).ToListAsync();
 		}
