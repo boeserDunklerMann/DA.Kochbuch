@@ -5,14 +5,14 @@
              Title="Rezept"
 			 xmlns:mvvm="clr-namespace:DA.Kochbuch.App.MVVM">
 	<ContentPage.BindingContext>
-		<mvvm:MainVM/>
+		<mvvm:RecipeVM/>
 	</ContentPage.BindingContext>
 	
     <VerticalStackLayout>
-        <!--<Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />-->
+		<HorizontalStackLayout>
+			<Label Text="Rezept von:"/>
+			<Label Text="{Binding SelectedRecipe.User.Name}"/>
+		</HorizontalStackLayout>
 		<Label
 			Text="Zutaten"
 			/>
@@ -27,5 +27,11 @@
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
+		<Label
+			Text="Zubereitung"
+			/>
+		<Label
+			Text="{Binding SelectedRecipe.CookInstructon}"
+			/>
 	</VerticalStackLayout>
 </ContentPage>

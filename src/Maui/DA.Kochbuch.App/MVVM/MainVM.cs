@@ -14,7 +14,6 @@ namespace DA.Kochbuch.App.MVVM
 	public class MainVM : BaseViewModel, INotifyPropertyChanged, IDisposable
 	{
 		#region private fields
-		private ApiClient.Client? api;
 		private ObservableCollection<Model.UnitsTypes.IngredientUnit> _units;
 		private ObservableCollection<Model.Recipe> _recipes;
 		#endregion
@@ -46,25 +45,10 @@ namespace DA.Kochbuch.App.MVVM
 			get;
 			set;
 		} = null;
-
-		public string? Username
-		{
-			get;
-			set;
-		}
-
-		public string? Password
-		{
-			get; set;
-		}
 		#endregion
 
-		public MainVM()
+		public MainVM() : base()
 		{
-			http = new HttpClient();
-			api = new ApiClient.Client("http://192.168.2.108:5002/", http); // TODO DA: from cfg
-			Username = "ab";
-			Password = "cd";
 			_units = new ObservableCollection<Model.UnitsTypes.IngredientUnit>();
 			_recipes = new ObservableCollection<Recipe>();
 		}

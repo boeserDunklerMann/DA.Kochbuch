@@ -12,15 +12,18 @@
             Padding="30,0"
             Spacing="25">
 			<Image
-                Source="splash,jpg"
+                Source="kitchen_tools.png"
                 HeightRequest="185"
                 Aspect="AspectFit"
                 SemanticProperties.Description="kitchen tools" />
+			
 			<Label Text="Zugangsdaten"/>
 			
 			<HorizontalStackLayout>
 				<Label>Benutzername:</Label>
+				<Entry Text="{Binding Username}" />
 				<Label>Passwort:</Label>
+				<Entry IsPassword="True" Text="{Binding Password}" />
 			</HorizontalStackLayout>
 			
 			<Button Text="Load data"
