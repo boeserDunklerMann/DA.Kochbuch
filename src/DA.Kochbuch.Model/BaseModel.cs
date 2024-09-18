@@ -10,8 +10,6 @@ namespace DA.Kochbuch.Model
 	/// </remarks>
 	public abstract class BaseModel
 	{
-		// TODO AD: muss das hier alles virtual sein?
-
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int ID { get; set; }
 
@@ -26,7 +24,10 @@ namespace DA.Kochbuch.Model
 		/// </summary>
 		public DateTime? CreationDate { get; set; }
 		public bool Deleted { get; set; }
-		//public abstract void PopulateMyID();
+		public override string ToString()
+		{
+			return Name;
+		}
 		public static T Create<T>(string name = "") where T : BaseModel, new()
 		{
 			return new T { Name = name, CreationDate = DateTime.UtcNow, ChangeDate = DateTime.UtcNow };
