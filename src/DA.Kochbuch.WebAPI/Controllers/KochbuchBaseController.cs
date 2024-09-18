@@ -9,6 +9,7 @@ namespace DA.Kochbuch.WebAPI.Controllers
 	/// <Create Datum="29.07.2024" Entwickler="DA" />
 	/// <Change Datum="05.08.2024" Entwickler="DA">VerifyAccessToken added</Change>
 	/// <Change Datum="05.08.2024" Entwickler="DA">CheckContext added</Change>
+	/// <Change Datum="18.09.2024" Entwickler="DA">VerifyUserAsync added</Change>
 	/// </ChangeLog>
 	/// <summary>
 	/// base controller with DBContext
@@ -54,6 +55,15 @@ namespace DA.Kochbuch.WebAPI.Controllers
 			accessToken.ChangeDate = DateTime.UtcNow;
 			await KochbuchContext.SaveChangesAsync();
 			return accessToken.IsValid;
+		}
+
+		/// <ChangeLog>
+		/// <Create Datum="18.09.2024" Entwickler="DA" />
+		/// </ChangeLog>
+		protected async Task<bool> VerifyUserAsync(string username, string password, bool throwExceptionIfFailed)
+		{
+			CheckContext();
+			return await Task.FromResult<bool>(true);
 		}
 
 		/// <ChangeLog>
