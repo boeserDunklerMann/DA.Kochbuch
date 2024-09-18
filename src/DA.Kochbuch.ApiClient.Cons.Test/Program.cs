@@ -17,16 +17,9 @@ namespace DA.Kochbuch.ApiClient.Cons.Test
 			{
 				Client client = new Client("http://localhost:5215/", http);
 				{
-					Guid token = CreateToken(client);
-					ICollection<Recipe> recipes = client.RecipeAllAsync(token).Result;
+					ICollection<Recipe> recipes = client.RecipeAllAsync("a", "b").Result;
 				}
 			}
-		}
-
-		Guid CreateToken(Client client)
-		{
-			var token = client.AccessTokenPOSTAsync("aa", "bc").Result;
-			return token.ID;
 		}
 	}
 }

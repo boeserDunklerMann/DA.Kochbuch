@@ -77,15 +77,15 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<AccessToken> AccessTokenPOSTAsync(string? username, string? password)
+        public virtual System.Threading.Tasks.Task RecipePOSTAsync(string? username, string? password, Recipe? body)
         {
-            return AccessTokenPOSTAsync(username, password, System.Threading.CancellationToken.None);
+            return RecipePOSTAsync(username, password, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AccessToken> AccessTokenPOSTAsync(string? username, string? password, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task RecipePOSTAsync(string? username, string? password, Recipe? body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -93,14 +93,16 @@ namespace DA.Kochbuch.ApiClient
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "text/plain");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(body, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/AccessToken"
-                    urlBuilder_.Append("api/AccessToken");
+                    // Operation Path: "api/Recipe"
+                    urlBuilder_.Append("api/Recipe");
                     urlBuilder_.Append('?');
                     if (username != null)
                     {
@@ -137,165 +139,6 @@ namespace DA.Kochbuch.ApiClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<AccessToken>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AccessToken>> AccessTokenAllAsync()
-        {
-            return AccessTokenAllAsync(System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AccessToken>> AccessTokenAllAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
-
-                    var urlBuilder_ = new System.Text.StringBuilder();
-                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/AccessToken"
-                    urlBuilder_.Append("api/AccessToken");
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
-                        foreach (var item_ in response_.Headers)
-                            headers_[item_.Key] = item_.Value;
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<AccessToken>>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AccessTokenPUTAsync(AccessToken? body)
-        {
-            return AccessTokenPUTAsync(body, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AccessTokenPUTAsync(AccessToken? body, System.Threading.CancellationToken cancellationToken)
-        {
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(body, JsonSerializerSettings);
-                    var content_ = new System.Net.Http.StringContent(json_);
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("PUT");
-
-                    var urlBuilder_ = new System.Text.StringBuilder();
-                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/AccessToken"
-                    urlBuilder_.Append("api/AccessToken");
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
-                        foreach (var item_ in response_.Headers)
-                            headers_[item_.Key] = item_.Value;
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
                             return;
                         }
                         else
@@ -320,249 +163,15 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AccessTokenDELETEAsync(AccessToken? body)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Recipe>> RecipeAllAsync(string? username, string? password)
         {
-            return AccessTokenDELETEAsync(body, System.Threading.CancellationToken.None);
+            return RecipeAllAsync(username, password, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AccessTokenDELETEAsync(AccessToken? body, System.Threading.CancellationToken cancellationToken)
-        {
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(body, JsonSerializerSettings);
-                    var content_ = new System.Net.Http.StringContent(json_);
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
-
-                    var urlBuilder_ = new System.Text.StringBuilder();
-                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/AccessToken"
-                    urlBuilder_.Append("api/AccessToken");
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
-                        foreach (var item_ in response_.Headers)
-                            headers_[item_.Key] = item_.Value;
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AccessTokenDELETE2Async(System.Guid accessTokenID)
-        {
-            return AccessTokenDELETE2Async(accessTokenID, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AccessTokenDELETE2Async(System.Guid accessTokenID, System.Threading.CancellationToken cancellationToken)
-        {
-            if (accessTokenID == null)
-                throw new System.ArgumentNullException("accessTokenID");
-
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
-
-                    var urlBuilder_ = new System.Text.StringBuilder();
-                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/AccessToken/{accessTokenID}"
-                    urlBuilder_.Append("api/AccessToken/");
-                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture)));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
-                        foreach (var item_ in response_.Headers)
-                            headers_[item_.Key] = item_.Value;
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task RecipePOSTAsync(System.Guid? accessTokenID, Recipe? body)
-        {
-            return RecipePOSTAsync(accessTokenID, body, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task RecipePOSTAsync(System.Guid? accessTokenID, Recipe? body, System.Threading.CancellationToken cancellationToken)
-        {
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(body, JsonSerializerSettings);
-                    var content_ = new System.Net.Http.StringContent(json_);
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-
-                    var urlBuilder_ = new System.Text.StringBuilder();
-                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Recipe"
-                    urlBuilder_.Append("api/Recipe");
-                    urlBuilder_.Append('?');
-                    if (accessTokenID != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("accessTokenID")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    urlBuilder_.Length--;
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
-                        foreach (var item_ in response_.Headers)
-                            headers_[item_.Key] = item_.Value;
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Recipe>> RecipeAllAsync(System.Guid? accessTokenID)
-        {
-            return RecipeAllAsync(accessTokenID, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Recipe>> RecipeAllAsync(System.Guid? accessTokenID, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Recipe>> RecipeAllAsync(string? username, string? password, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -578,9 +187,13 @@ namespace DA.Kochbuch.ApiClient
                     // Operation Path: "api/Recipe"
                     urlBuilder_.Append("api/Recipe");
                     urlBuilder_.Append('?');
-                    if (accessTokenID != null)
+                    if (username != null)
                     {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("accessTokenID")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                        urlBuilder_.Append(System.Uri.EscapeDataString("username")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (password != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("password")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 
@@ -638,15 +251,15 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task RecipePUTAsync(System.Guid? accessTokenID, Recipe? body)
+        public virtual System.Threading.Tasks.Task RecipePUTAsync(string? username, string? password, Recipe? body)
         {
-            return RecipePUTAsync(accessTokenID, body, System.Threading.CancellationToken.None);
+            return RecipePUTAsync(username, password, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task RecipePUTAsync(System.Guid? accessTokenID, Recipe? body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task RecipePUTAsync(string? username, string? password, Recipe? body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -665,9 +278,13 @@ namespace DA.Kochbuch.ApiClient
                     // Operation Path: "api/Recipe"
                     urlBuilder_.Append("api/Recipe");
                     urlBuilder_.Append('?');
-                    if (accessTokenID != null)
+                    if (username != null)
                     {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("accessTokenID")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                        urlBuilder_.Append(System.Uri.EscapeDataString("username")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (password != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("password")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 
@@ -720,15 +337,15 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task RecipeDELETEAsync(System.Guid? accessTokenID, Recipe? body)
+        public virtual System.Threading.Tasks.Task RecipeDELETEAsync(string? username, string? password, Recipe? body)
         {
-            return RecipeDELETEAsync(accessTokenID, body, System.Threading.CancellationToken.None);
+            return RecipeDELETEAsync(username, password, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task RecipeDELETEAsync(System.Guid? accessTokenID, Recipe? body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task RecipeDELETEAsync(string? username, string? password, Recipe? body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -747,9 +364,13 @@ namespace DA.Kochbuch.ApiClient
                     // Operation Path: "api/Recipe"
                     urlBuilder_.Append("api/Recipe");
                     urlBuilder_.Append('?');
-                    if (accessTokenID != null)
+                    if (username != null)
                     {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("accessTokenID")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                        urlBuilder_.Append(System.Uri.EscapeDataString("username")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (password != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("password")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 
@@ -802,18 +423,21 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Recipe> RecipeGETAsync(System.Guid accessTokenID, int recipeID)
+        public virtual System.Threading.Tasks.Task<Recipe> RecipeGETAsync(string username, string password, int recipeID)
         {
-            return RecipeGETAsync(accessTokenID, recipeID, System.Threading.CancellationToken.None);
+            return RecipeGETAsync(username, password, recipeID, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Recipe> RecipeGETAsync(System.Guid accessTokenID, int recipeID, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Recipe> RecipeGETAsync(string username, string password, int recipeID, System.Threading.CancellationToken cancellationToken)
         {
-            if (accessTokenID == null)
-                throw new System.ArgumentNullException("accessTokenID");
+            if (username == null)
+                throw new System.ArgumentNullException("username");
+
+            if (password == null)
+                throw new System.ArgumentNullException("password");
 
             if (recipeID == null)
                 throw new System.ArgumentNullException("recipeID");
@@ -829,11 +453,13 @@ namespace DA.Kochbuch.ApiClient
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/Recipe/{RecipeID}/{accessTokenID}"
+                    // Operation Path: "api/Recipe/{RecipeID}/{username}/{password}"
                     urlBuilder_.Append("api/Recipe/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(recipeID, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append('/');
-                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -889,15 +515,15 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<IngredientUnit>> IngredientUnitAsync(System.Guid? accessTokenID)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<IngredientUnit>> IngredientUnitAsync(string? username, string? password)
         {
-            return IngredientUnitAsync(accessTokenID, System.Threading.CancellationToken.None);
+            return IngredientUnitAsync(username, password, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<IngredientUnit>> IngredientUnitAsync(System.Guid? accessTokenID, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<IngredientUnit>> IngredientUnitAsync(string? username, string? password, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -913,9 +539,13 @@ namespace DA.Kochbuch.ApiClient
                     // Operation Path: "api/UnitsTypes/IngredientUnit"
                     urlBuilder_.Append("api/UnitsTypes/IngredientUnit");
                     urlBuilder_.Append('?');
-                    if (accessTokenID != null)
+                    if (username != null)
                     {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("accessTokenID")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                        urlBuilder_.Append(System.Uri.EscapeDataString("username")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (password != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("password")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 
@@ -973,15 +603,15 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UserPOSTAsync(System.Guid? accessTokenID, User? body)
+        public virtual System.Threading.Tasks.Task UserPOSTAsync(string? username, string? password, User? body)
         {
-            return UserPOSTAsync(accessTokenID, body, System.Threading.CancellationToken.None);
+            return UserPOSTAsync(username, password, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UserPOSTAsync(System.Guid? accessTokenID, User? body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UserPOSTAsync(string? username, string? password, User? body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1000,9 +630,13 @@ namespace DA.Kochbuch.ApiClient
                     // Operation Path: "api/User"
                     urlBuilder_.Append("api/User");
                     urlBuilder_.Append('?');
-                    if (accessTokenID != null)
+                    if (username != null)
                     {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("accessTokenID")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                        urlBuilder_.Append(System.Uri.EscapeDataString("username")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (password != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("password")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 
@@ -1055,15 +689,15 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> UserAllAsync(System.Guid? accessTokenID)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> UserAllAsync(string? username, string? password)
         {
-            return UserAllAsync(accessTokenID, System.Threading.CancellationToken.None);
+            return UserAllAsync(username, password, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> UserAllAsync(System.Guid? accessTokenID, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> UserAllAsync(string? username, string? password, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1079,9 +713,13 @@ namespace DA.Kochbuch.ApiClient
                     // Operation Path: "api/User"
                     urlBuilder_.Append("api/User");
                     urlBuilder_.Append('?');
-                    if (accessTokenID != null)
+                    if (username != null)
                     {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("accessTokenID")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                        urlBuilder_.Append(System.Uri.EscapeDataString("username")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (password != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("password")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 
@@ -1139,15 +777,15 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UserPUTAsync(System.Guid? accessTokenID, User? body)
+        public virtual System.Threading.Tasks.Task UserPUTAsync(string? username, string? password, User? body)
         {
-            return UserPUTAsync(accessTokenID, body, System.Threading.CancellationToken.None);
+            return UserPUTAsync(username, password, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UserPUTAsync(System.Guid? accessTokenID, User? body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UserPUTAsync(string? username, string? password, User? body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1166,9 +804,13 @@ namespace DA.Kochbuch.ApiClient
                     // Operation Path: "api/User"
                     urlBuilder_.Append("api/User");
                     urlBuilder_.Append('?');
-                    if (accessTokenID != null)
+                    if (username != null)
                     {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("accessTokenID")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                        urlBuilder_.Append(System.Uri.EscapeDataString("username")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (password != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("password")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 
@@ -1221,15 +863,15 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UserDELETEAsync(System.Guid? accessTokenID, User? body)
+        public virtual System.Threading.Tasks.Task UserDELETEAsync(string? username, string? password, User? body)
         {
-            return UserDELETEAsync(accessTokenID, body, System.Threading.CancellationToken.None);
+            return UserDELETEAsync(username, password, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UserDELETEAsync(System.Guid? accessTokenID, User? body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UserDELETEAsync(string? username, string? password, User? body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1248,9 +890,13 @@ namespace DA.Kochbuch.ApiClient
                     // Operation Path: "api/User"
                     urlBuilder_.Append("api/User");
                     urlBuilder_.Append('?');
-                    if (accessTokenID != null)
+                    if (username != null)
                     {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("accessTokenID")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                        urlBuilder_.Append(System.Uri.EscapeDataString("username")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (password != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("password")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 
@@ -1303,18 +949,21 @@ namespace DA.Kochbuch.ApiClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<User> UserGETAsync(System.Guid accessTokenID, int userID)
+        public virtual System.Threading.Tasks.Task<User> UserGETAsync(string username, string password, int userID)
         {
-            return UserGETAsync(accessTokenID, userID, System.Threading.CancellationToken.None);
+            return UserGETAsync(username, password, userID, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<User> UserGETAsync(System.Guid accessTokenID, int userID, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<User> UserGETAsync(string username, string password, int userID, System.Threading.CancellationToken cancellationToken)
         {
-            if (accessTokenID == null)
-                throw new System.ArgumentNullException("accessTokenID");
+            if (username == null)
+                throw new System.ArgumentNullException("username");
+
+            if (password == null)
+                throw new System.ArgumentNullException("password");
 
             if (userID == null)
                 throw new System.ArgumentNullException("userID");
@@ -1330,11 +979,13 @@ namespace DA.Kochbuch.ApiClient
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "api/User/{UserID}/{accessTokenID}"
+                    // Operation Path: "api/User/{UserID}/{username}/{password}"
                     urlBuilder_.Append("api/User/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(userID, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append('/');
-                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(accessTokenID, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(password, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
