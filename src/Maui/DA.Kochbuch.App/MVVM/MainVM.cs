@@ -1,32 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DA.Kochbuch.App.MVVM.Extension;
+using DA.Kochbuch.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DA.Kochbuch.Model;
-using DA.Kochbuch.Model.Authorization;
-using DA.Kochbuch.App.MVVM.Extension;
 
 namespace DA.Kochbuch.App.MVVM
 {
 	/// <ChangeLog>
 	/// <Create Datum="26.08.2024" Entwickler="DA" />
 	/// <Change Datum="18.09.2024" Entwickler="DA">Recipes added</Change>
-		/// </ChangeLog>
-		/// https://learn.microsoft.com/de-de/dotnet/maui/xaml/fundamentals/data-binding-basics?view=net-maui-8.0
-	public class MainVM : INotifyPropertyChanged, IDisposable
+	/// <Change Datum="18.09.2024" Entwickler="DA">AccessToken stuff removed</Change>
+	/// </ChangeLog>
+	/// https://learn.microsoft.com/de-de/dotnet/maui/xaml/fundamentals/data-binding-basics?view=net-maui-8.0
+	public class MainVM : BaseViewModel, INotifyPropertyChanged, IDisposable
 	{
 		#region private fields
-		private HttpClient? http;
 		private ApiClient.Client? api;
-		private AccessToken? _token;
 		private ObservableCollection<Model.UnitsTypes.IngredientUnit> _units;
 		private ObservableCollection<Model.Recipe> _recipes;
 		#endregion
 
-		public event PropertyChangedEventHandler? PropertyChanged;
+		new public event PropertyChangedEventHandler? PropertyChanged;
 
 		#region public exposed props
 		public ObservableCollection<Model.UnitsTypes.IngredientUnit> Units
@@ -53,59 +46,47 @@ namespace DA.Kochbuch.App.MVVM
 			get;
 			set;
 		} = null;
+
+		public string? Username
+		{
+			get;
+			set;
+		}
+
+		public string? Password
+		{
+			get; set;
+		}
 		#endregion
 
 		public MainVM()
 		{
 			http = new HttpClient();
 			api = new ApiClient.Client("http://192.168.2.108:5002/", http); // TODO DA: from cfg
+			Username = "ab";
+			Password = "cd";
 			_units = new ObservableCollection<Model.UnitsTypes.IngredientUnit>();
 			_recipes = new ObservableCollection<Recipe>();
 		}
 
-		public void Dispose()
-		{
-			if (http != null)
-			{
-				http.Dispose();
-				http = null;
-			}
-		}
-
 		#region private methods
-		/// <summary>
-		/// Returns a valid token
-		/// </summary>
-		/// <returns></returns>
-		/// <exception cref="NullReferenceException">if we dont have an APIClient</exception>
-		private async Task<AccessToken> GetAccessTokenAsync()
-		{
-			if (api == null)
-				throw new NullReferenceException(nameof(api));
-			if (_token != null && _token.IsValid)
-				return _token;
-			_token = await api.AccessTokenPOSTAsync("ab", "cd");  // TODO DA: from cfg
-			return _token;
-		}
 
 		private async void LoadDataAsync()
 		{
-			AccessToken token = await GetAccessTokenAsync();
-			if (token != null && token.IsValid)
-			{
-				var units = await api.IngredientUnitAsync(token.ID);
-				if (units != null)
-				{
-					_units.Clear();
-					units.ToList().ForEach(u => _units.Add(u));
-				}
+			if (api == null)
+				throw new NullReferenceException(nameof(api));
+			//var units = await api.IngredientUnitAsync(Username, Password);
+			//if (units != null)
+			//{
+			//	_units.Clear();
+			//	units.ToList().ForEach(u => _units.Add(u));
+			//}
 
-				var recipes = await api.RecipeAllAsync(token.ID);
-				if (recipes != null && recipes.Any())
-				{
-					_recipes.Clear();
-					_recipes.AddRange(recipes);
-				}
+			var recipes = await api.RecipeAllAsync(Username, Password);
+			if (recipes != null && recipes.Any())
+			{
+				_recipes.Clear();
+				_recipes.AddRange(recipes);
 			}
 		}
 		#endregion

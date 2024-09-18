@@ -67,4 +67,10 @@
 	  <ProjectReference Include="..\..\DA.Kochbuch.Model\DA.Kochbuch.Model.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="RecipePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

@@ -1,13 +1,18 @@
-﻿namespace DA.Kochbuch.App
+﻿using DA.Kochbuch.App.MVVM;
+
+namespace DA.Kochbuch.App
 {
 	public partial class MainPage : ContentPage
 	{
-		int count = 0;
-
 		public MainPage()
 		{
 			InitializeComponent();
 		}
-	}
 
+		private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+		{
+			Model.Recipe? selectedRecipe = ((MainVM)(BindingContext)).SelectedRecipe;
+			Application.Current.MainPage = new NavigationPage(new RecipePage(selectedRecipe));
+        }
+    }
 }

@@ -11,12 +11,18 @@
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
-            <Image
-                Source="dotnet_bot.png"
+			<Image
+                Source="splash,jpg"
                 HeightRequest="185"
                 Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a race car number eight" />
-
+                SemanticProperties.Description="kitchen tools" />
+			<Label Text="Zugangsdaten"/>
+			
+			<HorizontalStackLayout>
+				<Label>Benutzername:</Label>
+				<Label>Passwort:</Label>
+			</HorizontalStackLayout>
+			
 			<Button Text="Load data"
 				Command="{Binding LoadDataCommand}" />
 
@@ -25,7 +31,7 @@
 				Style="{StaticResource Headline}"
 				SemanticProperties.HeadingLevel="Level3" />
 			
-			<ListView ItemsSource="{Binding Recipes}" SelectedItem="{Binding SelectedRecipe}">
+			<ListView ItemsSource="{Binding Recipes}" SelectedItem="{Binding SelectedRecipe}" ItemSelected="ListView_ItemSelected">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<Label Text="{Binding Name}" Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level2" />

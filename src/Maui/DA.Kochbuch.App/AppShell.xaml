@@ -8,7 +8,7 @@
     Title="DA.Kochbuch.App">
 
     <ShellContent
-        Title="Home"
+        Title="Kochbuch"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
