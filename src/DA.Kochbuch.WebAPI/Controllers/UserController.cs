@@ -17,10 +17,10 @@ namespace DA.Kochbuch.WebAPI.Controllers
 #pragma warning disable CS8600 // KochbuchContext is checked in VerifyAccessToken
 #pragma warning disable CS8602 // KochbuchContext is checked in VerifyAccessToken
 #pragma warning disable CS8603 // KochbuchContext is checked in VerifyAccessToken
-		public async Task<IActionResult> CreateUserAsync(Guid accessTokenID, User newUser)
+		public async Task<IActionResult> CreateUserAsync(string username, string password, User newUser)
 		{
 			Logger.LogInformation($"running {nameof(CreateUserAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 
 			await KochbuchContext.Users.AddAsync(newUser);
 			await KochbuchContext.SaveChangesAsync();
@@ -29,30 +29,30 @@ namespace DA.Kochbuch.WebAPI.Controllers
 
 		[HttpGet]
 		//[Route(nameof(User))]
-		public async Task<IEnumerable<User>> GetAllUsersAsync(Guid accessTokenID)
+		public async Task<IEnumerable<User>> GetAllUsersAsync(string username, string password)
 		{
 			Logger.LogInformation($"running {nameof(GetAllUsersAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 
 			return await KochbuchContext.Users.Where(u => !u.Deleted).ToListAsync();
 		}
 
 		[HttpGet]
-		[Route("{UserID}/{accessTokenID}")]
-		public async Task<User> GetUserAsync(Guid accessTokenID, int UserID)
+		[Route("{UserID}/{username}/{password}")]
+		public async Task<User> GetUserAsync(string username, string password, int UserID)
 		{
 			Logger.LogInformation($"running {nameof(GetUserAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 
 
 			return await KochbuchContext.Users.FirstOrDefaultAsync(u => !u.Deleted && u.ID == UserID);
 		}
 
 		[HttpPut]
-		public async Task<IActionResult> UpdateUserAsync(Guid accessTokenID, User user)
+		public async Task<IActionResult> UpdateUserAsync(string username, string password, User user)
 		{
 			Logger.LogInformation($"running {nameof(UpdateUserAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 
 			User userFromDb = await KochbuchContext.Users.FirstOrDefaultAsync(u=>!u.Deleted && u.ID==user.ID);
 			if (userFromDb == null)
@@ -65,10 +65,10 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		}
 
 		[HttpDelete]
-		public async Task<IActionResult> DeleteUserAsync(Guid accessTokenID, User user)
+		public async Task<IActionResult> DeleteUserAsync(string username, string password, User user)
 		{
 			Logger.LogInformation($"running {nameof(DeleteUserAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 			User userFromDb = await KochbuchContext.Users.FirstOrDefaultAsync(u => !u.Deleted && u.ID == user.ID);
 			if (userFromDb == null)
 				throw new Exceptions.ObjectNotFoundException(nameof(User), user.ID);

@@ -16,10 +16,10 @@ namespace DA.Kochbuch.WebAPI.Controllers
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 #pragma warning disable CS8603 // Dereference of a possibly null reference.
 		[HttpPost]
-		public async Task<IActionResult> CreateRecipeAsync(Guid accessTokenID, Recipe newRecipe)
+		public async Task<IActionResult> CreateRecipeAsync(string username, string password, Recipe newRecipe)
 		{
 			Logger.LogInformation($"running {nameof(CreateRecipeAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 
 			await KochbuchContext.Recipes.AddAsync(newRecipe);
 			await KochbuchContext.SaveChangesAsync();
@@ -27,10 +27,10 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IEnumerable<Recipe>> GetAllRecipeAsync(Guid accessTokenID)
+		public async Task<IEnumerable<Recipe>> GetAllRecipeAsync(string username, string password)
 		{
 			Logger.LogInformation($"running {nameof(GetAllRecipeAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 			KochbuchContext.Units.ToList();
 			KochbuchContext.Ingredients.ToList();
 			// TODO DA: Ingredients fehlen!!
@@ -38,20 +38,20 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		}
 
 		[HttpGet]
-		[Route("{RecipeID}/{accessTokenID}")]
-		public async Task<Recipe> GetRecipeAsync(Guid accessTokenID, int RecipeID)
+		[Route("{RecipeID}/{username}/{password}")]
+		public async Task<Recipe> GetRecipeAsync(string username, string password, int RecipeID)
 		{
 			Logger.LogInformation($"running {nameof(GetRecipeAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 
 			return await KochbuchContext.Recipes.FirstOrDefaultAsync(r => !r.Deleted && r.ID == RecipeID);
 		}
 
 		[HttpPut]
-		public async Task<IActionResult> UpdateRecipeAsync(Guid accessTokenID, Recipe recipe)
+		public async Task<IActionResult> UpdateRecipeAsync(string username, string password, Recipe recipe)
 		{
 			Logger.LogInformation($"running {nameof(UpdateRecipeAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 
 			Recipe recipeFromDB = await KochbuchContext.Recipes.FirstOrDefaultAsync(r => !r.Deleted && r.ID == recipe.ID);
 			if (recipeFromDB == null)
@@ -67,10 +67,10 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		}
 
 		[HttpDelete]
-		public async Task<IActionResult> DeleteRecipeAsync(Guid accessTokenID, Recipe recipe)
+		public async Task<IActionResult> DeleteRecipeAsync(string username, string password, Recipe recipe)
 		{
 			Logger.LogInformation($"running {nameof(DeleteRecipeAsync)}");
-			await VerifyAccessToken(accessTokenID, true);
+			await VerifyUserAsync(username, password, true);
 
 			Recipe recipeFromDB = await KochbuchContext.Recipes.FirstOrDefaultAsync(r => !r.Deleted && r.ID == recipe.ID);
 			if (recipeFromDB == null)
