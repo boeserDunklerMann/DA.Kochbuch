@@ -20,6 +20,7 @@ namespace DA.Kochbuch.App.MVVM
 		private HttpClient? http;
 		private ApiClient.Client? api;
 		private ObservableCollection<Model.UnitsTypes.IngredientUnit> _units;
+		private AccessToken? _token;
 		#endregion
 
 		public event PropertyChangedEventHandler? PropertyChanged;
@@ -54,16 +55,24 @@ namespace DA.Kochbuch.App.MVVM
 		}
 
 		#region private methods
-		private async Task< AccessToken >CreateAccessTokenAsync()
+		/// <summary>
+		/// Returns a valid token
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="NullReferenceException">if we dont have an APIClient</exception>
+		private async Task<AccessToken> GetAccessTokenAsync()
 		{
 			if (api == null)
 				throw new NullReferenceException(nameof(api));
-			return await api.AccessTokenPOSTAsync("ab", "cd");  // TODO DA: from cfg
+			if (_token != null && _token.IsValid)
+				return _token;
+			_token = await api.AccessTokenPOSTAsync("ab", "cd");  // TODO DA: from cfg
+			return _token;
 		}
 
 		private async void LoadDataAsync()
 		{
-			AccessToken token = await CreateAccessTokenAsync();
+			AccessToken token = await GetAccessTokenAsync();
 			var units = await api.IngredientUnitAsync(token.ID);
 			if (units != null)
 			{
