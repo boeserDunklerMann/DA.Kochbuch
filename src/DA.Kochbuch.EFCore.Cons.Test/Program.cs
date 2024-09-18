@@ -1,6 +1,7 @@
 ﻿using DA.Kochbuch.Model;
 using DA.Kochbuch.Model.Authorization;
 using DA.Kochbuch.Model.UnitsTypes;
+using System.Text.Json;
 
 namespace DA.Kochbuch.EFCore.Cons.Test
 {
@@ -14,7 +15,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 		{
 			Console.WriteLine("Hello, World!");
 			Console.WriteLine("Drop database before running");
-			InsertData();
+			//InsertData();
 			ReadData();
 		}
 
@@ -93,8 +94,10 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 					{
 						Console.WriteLine("\t" + recipe.Name);
 						recipe.Ingredients.ToList().ForEach(i => Console.WriteLine("\t\t" + i.Name));
+						JsonSerializer.Serialize(recipe);
 					});
 				});
+				JsonSerializer.Serialize(recipes);
 
 				// TODO: Das ist zwar umständlich aber funktioniert!
 				//var firstUser = ctx.Users.First();

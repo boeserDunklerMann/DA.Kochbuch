@@ -1,4 +1,7 @@
 ﻿#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable. AD: Darum kümmert sich EFCore
+
+using System.Text.Json.Serialization;
+
 namespace DA.Kochbuch.Model
 {
 	/// <ChangeLog>
@@ -12,6 +15,7 @@ namespace DA.Kochbuch.Model
 		public int NumberPersons { get; set; }
 
 		public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+		[JsonIgnore]
 		public virtual User User { get; set; }
 		public string? CookInstructon { get; set; }// = string.Empty;
 	}
