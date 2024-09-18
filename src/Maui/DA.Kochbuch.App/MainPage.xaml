@@ -34,7 +34,9 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
-			
+			<Button Text="Load data"
+				Command="{Binding LoadDataCommand}" />
+
 			<ListView ItemsSource="{Binding Units}">
 				<ListView.ItemTemplate>
 					<DataTemplate>

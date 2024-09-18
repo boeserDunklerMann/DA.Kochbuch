@@ -21,7 +21,7 @@ namespace DA.Kochbuch.App.MVVM
 		private ApiClient.Client? api;
 		private ObservableCollection<Model.UnitsTypes.IngredientUnit> _units;
 		#endregion
-		
+
 		public event PropertyChangedEventHandler? PropertyChanged;
 
 		#region public exposed props
@@ -39,9 +39,9 @@ namespace DA.Kochbuch.App.MVVM
 		public MainVM()
 		{
 			http = new HttpClient();
-			api = new ApiClient.Client("http://localhost:5215/", http); // TODO DA: from cfg
+			api = new ApiClient.Client("http://192.168.2.108:5002/", http); // TODO DA: from cfg
 			_units = new ObservableCollection<Model.UnitsTypes.IngredientUnit>();
-			LoadDataAsync().Wait();
+			//LoadDataAsync();
 		}
 
 		public void Dispose()
@@ -54,14 +54,14 @@ namespace DA.Kochbuch.App.MVVM
 		}
 
 		#region private methods
-		private async Task<AccessToken> CreateAccessTokenAsync()
+		private async Task< AccessToken >CreateAccessTokenAsync()
 		{
 			if (api == null)
 				throw new NullReferenceException(nameof(api));
-			return await api.AccessTokenPOSTAsync("ab", "cd");	// TODO DA: from cfg
+			return await api.AccessTokenPOSTAsync("ab", "cd");  // TODO DA: from cfg
 		}
 
-		private async Task LoadDataAsync()
+		private async void LoadDataAsync()
 		{
 			AccessToken token = await CreateAccessTokenAsync();
 			var units = await api.IngredientUnitAsync(token.ID);
@@ -73,5 +73,8 @@ namespace DA.Kochbuch.App.MVVM
 		}
 		#endregion
 
+		#region Commands
+		public DelegateCommand LoadDataCommand => new DelegateCommand(LoadDataAsync);
+		#endregion
 	}
 }
