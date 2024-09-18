@@ -18,7 +18,7 @@ namespace DA.Kochbuch.App.MVVM
 		private ObservableCollection<Model.Recipe> _recipes;
 		#endregion
 
-		new public event PropertyChangedEventHandler? PropertyChanged;
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		#region public exposed props
 		public ObservableCollection<Model.UnitsTypes.IngredientUnit> Units
@@ -59,19 +59,29 @@ namespace DA.Kochbuch.App.MVVM
 		{
 			if (api == null)
 				throw new NullReferenceException(nameof(api));
-			//var units = await api.IngredientUnitAsync(Username, Password);
-			//if (units != null)
-			//{
-			//	_units.Clear();
-			//	units.ToList().ForEach(u => _units.Add(u));
-			//}
 
-			var recipes = await api.RecipeAllAsync(Username, Password);
-			if (recipes != null && recipes.Any())
+			var allUsersWithRecipes = await api.UserAllAsync(Username, Password);
+
+			// TODO DA: unschön, aber funktioniert
+			allUsersWithRecipes.ToList().ForEach(u =>
+			{
+				if (u.OwnRecipes!=null && u.OwnRecipes.Any())
+					u.OwnRecipes.ToList().ForEach(r => r.User = u);
+			});
+
+			if (allUsersWithRecipes != null && allUsersWithRecipes.Any())
 			{
 				_recipes.Clear();
-				_recipes.AddRange(recipes);
+				var usersRecipes = allUsersWithRecipes.Where(u=>u.OwnRecipes!=null).SelectMany(u => u.OwnRecipes);//.ToList();
+				_recipes.AddRange(usersRecipes.ToList());
 			}
+
+			//var recipes = await api.RecipeAllAsync(Username, Password);
+			//if (recipes != null && recipes.Any())
+			//{
+			//	_recipes.Clear();
+			//	_recipes.AddRange(recipes);
+			//}
 		}
 		#endregion
 

@@ -10,10 +10,8 @@ namespace DA.Kochbuch.App.MVVM
 	/// <ChangeLog>
 	/// <Create Datum="18.09.2024" Entwickler="DA" />
 	/// </ChangeLog>
-	public class BaseViewModel : INotifyPropertyChanged, IDisposable
-	{
-		public event PropertyChangedEventHandler? PropertyChanged;
-		
+	public class BaseViewModel : IDisposable
+	{		
 		#region Fields
 		protected HttpClient? http;
 		protected ApiClient.Client? api;

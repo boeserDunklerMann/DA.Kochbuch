@@ -13,7 +13,7 @@ namespace DA.Kochbuch.App.MVVM
 	/// </ChangeLog>
 	public class RecipeVM : BaseViewModel, INotifyPropertyChanged, IDisposable
 	{
-		new public event PropertyChangedEventHandler? PropertyChanged;
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		#region public exposed props
 		public Recipe? SelectedRecipe
