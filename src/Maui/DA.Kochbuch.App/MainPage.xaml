@@ -6,9 +6,8 @@
 	<ContentPage.BindingContext>
 		<mvvm:MainVM/>
 	</ContentPage.BindingContext>
-	
-	
-    <ScrollView>
+
+	<ScrollView>
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">

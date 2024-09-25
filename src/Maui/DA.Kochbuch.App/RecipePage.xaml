@@ -1,21 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="DA.Kochbuch.App.RecipePage"
              Title="Rezept"
-			 xmlns:mvvm="clr-namespace:DA.Kochbuch.App.MVVM">
+			 xmlns:mvvm="clr-namespace:DA.Kochbuch.App.MVVM" Loaded="ContentPage_Loaded">
+	
 	<ContentPage.BindingContext>
 		<mvvm:RecipeVM/>
 	</ContentPage.BindingContext>
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<toolkit:ByteArrayToImageSourceConverter x:Key="Converter"/>
+		</ResourceDictionary>
+	</ContentPage.Resources>
 	
     <VerticalStackLayout>
 		<HorizontalStackLayout>
 			<Label Text="Rezept von: "/>
-			<Label Text="{Binding SelectedRecipe.User.Name}"/>
+			<Label Text="{Binding SelectedRecipe.User.Name}" FontAttributes="Bold"/>
 		</HorizontalStackLayout>
-		<Label
-			Text="Zutaten"
+		
+		<HorizontalStackLayout>
+			<Image Source="{Binding SelectedRecipe.Images[0].Image, Mode=OneWay, Converter={StaticResource Converter}}"/>
+			<!--https://learn.microsoft.com/de-de/dotnet/communitytoolkit/maui/converters/byte-array-to-image-source-converter-->
+		</HorizontalStackLayout>
+		
+		<HorizontalStackLayout>
+			<Label
+			Text="Zutaten für "
 			/>
+			<Label
+			Text="{Binding SelectedRecipe.NumberPersons}" FontAttributes="Bold"
+			/>
+			<Label Text=" Personen"/>
+		</HorizontalStackLayout>
+		
 		<ListView ItemsSource="{Binding SelectedRecipe.Ingredients}" >
 			<ListView.ItemTemplate>
 				<DataTemplate>

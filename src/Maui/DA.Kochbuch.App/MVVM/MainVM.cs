@@ -73,6 +73,7 @@ namespace DA.Kochbuch.App.MVVM
 				_recipes.Clear();
 				var usersRecipes = allUsersWithRecipes.Where(u=>u.OwnRecipes!=null).SelectMany(u => u.OwnRecipes);//.ToList();
 				_recipes.AddRange(usersRecipes.ToList());
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
 			}
 		}
 		#endregion

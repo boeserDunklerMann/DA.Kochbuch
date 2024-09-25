@@ -1,10 +1,5 @@
 ﻿using DA.Kochbuch.Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DA.Kochbuch.App.MVVM
 {
@@ -22,6 +17,8 @@ namespace DA.Kochbuch.App.MVVM
 			set;
 		} = null;
 		#endregion
+
+		#region Ctors
 		public RecipeVM() : base()
 		{
 		}
@@ -29,6 +26,31 @@ namespace DA.Kochbuch.App.MVVM
 		{
 			SelectedRecipe = selectedRecipe;
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRecipe)));
+		}
+		#endregion
+
+		/// <summary>
+		/// Loads the full recipe-data (including Ingredients and Images)
+		/// </summary>
+		public async Task LoadRecipeAsync()
+		{
+			if (SelectedRecipe != null && Username != null && Password != null)
+			{
+				if (api == null)
+					throw new NullReferenceException(nameof(api));
+				var recipe = await api.RecipeGETAsync(Username, Password, SelectedRecipe.ID);
+				if (recipe != null)
+				{
+					recipe.User = SelectedRecipe.User;
+					SelectedRecipe = recipe;
+					//if (SelectedRecipe.Images.Count>0)
+					//{
+					//	ImageStream = new MemoryStream(SelectedRecipe.Images.ToArray()[0].Image);
+					//	PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ImageStream)));
+					//}
+					PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRecipe)));
+				}
+			}
 		}
 	}
 }
