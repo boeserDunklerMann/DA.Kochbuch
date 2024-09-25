@@ -42,18 +42,8 @@
 			/>
 			<Label Text=" Personen"/>
 		</HorizontalStackLayout>
-		
-		<ListView ItemsSource="{Binding SelectedRecipe.Ingredients}" >
-			<!--<ListView.ItemTemplate>
-				<DataTemplate>
-					--><!--<HorizontalStackLayout>
-						<Label Text="{Binding Amount}"/>
-						<Label Text="{Binding Unit.Name}"/>
-						<Label Text="{Binding Name}"/>
-					</HorizontalStackLayout>--><!--
-				</DataTemplate>
-			</ListView.ItemTemplate>-->
-		</ListView>
+
+		<ListView ItemsSource="{Binding SelectedRecipe.Ingredients}" />
 		<Label
 			Text="Zubereitung"
 			/>
