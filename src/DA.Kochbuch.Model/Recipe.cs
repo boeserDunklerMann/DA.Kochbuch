@@ -6,8 +6,8 @@ namespace DA.Kochbuch.Model
 {
 	/// <ChangeLog>
 	/// <Create Datum="24.07.2024" Entwickler="DA" />
-	/// </ChangeLog>
 	/// <Change Datum="25.09.2024" Entwickler="DA">Prop Images added</Change>
+	/// </ChangeLog>
 	public class Recipe : BaseModel
 	{
 		/// <summary>

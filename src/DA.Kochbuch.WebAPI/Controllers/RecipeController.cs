@@ -6,6 +6,7 @@ namespace DA.Kochbuch.WebAPI.Controllers
 {
 	/// <ChangeLog>
 	/// <Create Datum="06.08.2024" Entwickler="DA" />
+	/// <Change Datum="25.09.2024" Entwickler="DA">made Getter more EF-like with .Include</Change>
 	/// </ChangeLog>
 	[Route("api/[controller]")]
 	[ApiController]
@@ -33,10 +34,14 @@ namespace DA.Kochbuch.WebAPI.Controllers
 			await VerifyUserAsync(username, password, true);
 			// TODO DA: unschöner workaround
 			KochbuchContext.Units.ToList();
-			KochbuchContext.Ingredients.ToList();
+			//KochbuchContext.Ingredients.ToList();
 			KochbuchContext.Users.ToList();
+			//KochbuchContext.RecipeImages.ToList();
 			// DONE DA: Ingredients fehlen!!
-			return await KochbuchContext.Recipes.Where(r => !r.Deleted).ToListAsync();
+			return await KochbuchContext.Recipes
+					.Include(nameof(Recipe.Ingredients))
+					.Include(nameof(Recipe.Images))
+				.Where(r => !r.Deleted).ToListAsync();
 		}
 
 		[HttpGet]
@@ -45,8 +50,17 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		{
 			Logger.LogInformation($"running {nameof(GetRecipeAsync)}");
 			await VerifyUserAsync(username, password, true);
+			// TODO DA: unschöner workaround
+			KochbuchContext.Units.ToList();
+			//KochbuchContext.Ingredients.ToList();
+			KochbuchContext.Users.ToList();
+			//KochbuchContext.RecipeImages.ToList();
+			// DONE DA: Daten fehlen!!
 
-			return await KochbuchContext.Recipes.FirstOrDefaultAsync(r => !r.Deleted && r.ID == RecipeID);
+			return await KochbuchContext.Recipes
+					.Include(nameof(Recipe.Ingredients))
+					.Include(nameof(Recipe.Images))
+				.FirstOrDefaultAsync(r => !r.Deleted && r.ID == RecipeID);
 		}
 
 		[HttpPut]

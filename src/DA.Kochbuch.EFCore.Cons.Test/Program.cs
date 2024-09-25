@@ -64,8 +64,15 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			ksuppe.NumberPersons = 3;
 			ksuppe.CookInstructon = "abc";
 			ksuppe.ChangeDate = DateTime.UtcNow;
-			ksuppe.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe1) });
-			ksuppe.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe2) });
+			
+			Recipeimage ri1 = BaseModel.Create<Recipeimage>("ksuppe img#01");
+			ri1.Image = Image2ByteArray(suppe1);
+
+			Recipeimage ri2 = BaseModel.Create<Recipeimage>("ksuppe img #02");
+			ri2.Image = Image2ByteArray(suppe2);
+			ksuppe.Images.Add(ri1);
+			ksuppe.Images.Add(ri2);
+
 			ctx.Recipes.Add(ksuppe);
 			ctx.RecipeImages.AddRange(ksuppe.Images);
 
