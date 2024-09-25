@@ -22,6 +22,16 @@ namespace DA.Kochbuch.Model
 		{
 			return $"{Amount} {Unit?.Name} {Name}";
 		}
+		public override bool Equals(object? obj)
+		{
+			if (obj == null || !(obj is Ingredient)) 
+				return false;
+			return ID == ((Ingredient)obj).ID;
+		}
+		public override int GetHashCode()
+		{
+			return ID.GetHashCode();
+		}
 	}
 }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
