@@ -50,5 +50,6 @@
 		<Label
 			Text="{Binding SelectedRecipe.CookInstructon}"
 			/>
+		<Button Text="Bearbeiten" IsVisible="{Binding CanEdit}"/>
 	</VerticalStackLayout>
 </ContentPage>

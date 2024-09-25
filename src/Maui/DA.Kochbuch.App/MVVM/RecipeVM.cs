@@ -16,6 +16,19 @@ namespace DA.Kochbuch.App.MVVM
 			get;
 			set;
 		} = null;
+
+		/// <summary>
+		/// Determines wheter the current user is allowed to modify this recipe
+		/// </summary>
+		public bool CanEdit
+		{
+			get
+			{
+				if (SelectedRecipe != null)
+					return SelectedRecipe.User.Equals(CurrentUser);
+				return false;
+			}
+		}
 		#endregion
 
 		#region Ctors
