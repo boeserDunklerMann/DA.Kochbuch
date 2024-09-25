@@ -17,6 +17,11 @@ namespace DA.Kochbuch.Model
         public IngredientUnit? Unit { get; set; }
 		[JsonIgnore]
 		public virtual Recipe? Recipe { get; set; }
+
+		public override string ToString()
+		{
+			return $"{Amount} {Unit?.Name} {Name}";
+		}
 	}
 }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

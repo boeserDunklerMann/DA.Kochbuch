@@ -10,9 +10,10 @@
 		<mvvm:RecipeVM/>
 	</ContentPage.BindingContext>
 
+	<!--https://learn.microsoft.com/de-de/dotnet/communitytoolkit/maui/converters/byte-array-to-image-source-converter-->
 	<ContentPage.Resources>
 		<ResourceDictionary>
-			<toolkit:ByteArrayToImageSourceConverter x:Key="Converter"/>
+			<toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageConverter"/>
 		</ResourceDictionary>
 	</ContentPage.Resources>
 	
@@ -22,11 +23,16 @@
 			<Label Text="{Binding SelectedRecipe.User.Name}" FontAttributes="Bold"/>
 		</HorizontalStackLayout>
 		
-		<HorizontalStackLayout>
-			<Image Source="{Binding SelectedRecipe.Images[0].Image, Mode=OneWay, Converter={StaticResource Converter}}"/>
-			<!--https://learn.microsoft.com/de-de/dotnet/communitytoolkit/maui/converters/byte-array-to-image-source-converter-->
-		</HorizontalStackLayout>
-		
+
+		<!--https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/carouselview/populate-data?view=net-maui-8.0-->
+		<CarouselView ItemsSource="{Binding SelectedRecipe.Images}">
+			<CarouselView.ItemTemplate>
+				<DataTemplate>
+					<Image Source="{Binding Image, Mode=OneWay, Converter={StaticResource ByteArrayToImageConverter}}" HeightRequest="150"  WidthRequest="150"/>
+				</DataTemplate>
+			</CarouselView.ItemTemplate>
+		</CarouselView>
+
 		<HorizontalStackLayout>
 			<Label
 			Text="Zutaten für "
@@ -38,15 +44,15 @@
 		</HorizontalStackLayout>
 		
 		<ListView ItemsSource="{Binding SelectedRecipe.Ingredients}" >
-			<ListView.ItemTemplate>
+			<!--<ListView.ItemTemplate>
 				<DataTemplate>
-					<HorizontalStackLayout>
+					--><!--<HorizontalStackLayout>
 						<Label Text="{Binding Amount}"/>
 						<Label Text="{Binding Unit.Name}"/>
 						<Label Text="{Binding Name}"/>
-					</HorizontalStackLayout>
+					</HorizontalStackLayout>--><!--
 				</DataTemplate>
-			</ListView.ItemTemplate>
+			</ListView.ItemTemplate>-->
 		</ListView>
 		<Label
 			Text="Zubereitung"
