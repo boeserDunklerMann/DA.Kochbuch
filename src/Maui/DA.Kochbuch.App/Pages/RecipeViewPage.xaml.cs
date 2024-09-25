@@ -2,9 +2,9 @@ using DA.Kochbuch.App.MVVM;
 
 namespace DA.Kochbuch.App;
 
-public partial class RecipePage : ContentPage
+public partial class RecipeViewPage : ContentPage
 {
-	public RecipePage(Model.Recipe? recipe=null)
+	public RecipeViewPage(Model.Recipe? recipe=null)
 	{
 		InitializeComponent();
 		if (recipe != null)

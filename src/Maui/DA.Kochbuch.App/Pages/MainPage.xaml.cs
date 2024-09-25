@@ -12,7 +12,7 @@ namespace DA.Kochbuch.App
 		private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			Model.Recipe? selectedRecipe = ((MainVM)(BindingContext)).SelectedRecipe;
-			await Navigation.PushAsync(new RecipePage(selectedRecipe));
+			await Navigation.PushAsync(new RecipeViewPage(selectedRecipe));
         }
 
 		private async void ContentPage_Loaded(object sender, EventArgs e)
