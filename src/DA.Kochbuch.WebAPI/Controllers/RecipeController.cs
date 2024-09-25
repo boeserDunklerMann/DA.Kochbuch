@@ -32,12 +32,9 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		{
 			Logger.LogInformation($"running {nameof(GetAllRecipeAsync)}");
 			await VerifyUserAsync(username, password, true);
-			// TODO DA: unschöner workaround
+
 			KochbuchContext.Units.ToList();
-			//KochbuchContext.Ingredients.ToList();
-			KochbuchContext.Users.ToList();
-			//KochbuchContext.RecipeImages.ToList();
-			// DONE DA: Ingredients fehlen!!
+
 			return await KochbuchContext.Recipes
 					.Include(nameof(Recipe.Ingredients))
 					.Include(nameof(Recipe.Images))
@@ -50,12 +47,8 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		{
 			Logger.LogInformation($"running {nameof(GetRecipeAsync)}");
 			await VerifyUserAsync(username, password, true);
-			// TODO DA: unschöner workaround
+
 			KochbuchContext.Units.ToList();
-			//KochbuchContext.Ingredients.ToList();
-			KochbuchContext.Users.ToList();
-			//KochbuchContext.RecipeImages.ToList();
-			// DONE DA: Daten fehlen!!
 
 			return await KochbuchContext.Recipes
 					.Include(nameof(Recipe.Ingredients))
