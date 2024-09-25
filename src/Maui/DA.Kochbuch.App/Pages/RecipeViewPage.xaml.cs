@@ -1,4 +1,5 @@
 using DA.Kochbuch.App.MVVM;
+using DA.Kochbuch.App.Pages;
 
 namespace DA.Kochbuch.App;
 
@@ -9,7 +10,7 @@ public partial class RecipeViewPage : ContentPage
 		InitializeComponent();
 		if (recipe != null)
 		{
-			this.BindingContext = new RecipeVM(recipe);
+			this.BindingContext = new RecipeVM(recipe, RecipeVM.EditMode.None);
 		}
 	}
 
@@ -17,4 +18,10 @@ public partial class RecipeViewPage : ContentPage
 	{
 		await ((RecipeVM)BindingContext).LoadRecipeAsync();
     }
+
+	private async void Button_Clicked(object sender, EventArgs e)
+	{
+		Model.Recipe? selectedRecipe = ((RecipeVM)(BindingContext)).SelectedRecipe;
+		await Navigation.PushAsync(new RecipeEditPage(selectedRecipe));
+	}
 }

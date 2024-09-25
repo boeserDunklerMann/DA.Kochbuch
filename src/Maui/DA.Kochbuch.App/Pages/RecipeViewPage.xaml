@@ -18,6 +18,7 @@
 	</ContentPage.Resources>
 	
     <VerticalStackLayout>
+		<Label Text="{Binding SelectedRecipe.Name}" Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level1" />
 		<HorizontalStackLayout>
 			<Label Text="Rezept von: "/>
 			<Label Text="{Binding SelectedRecipe.User.Name}" FontAttributes="Bold"/>
@@ -50,6 +51,6 @@
 		<Label
 			Text="{Binding SelectedRecipe.CookInstructon}"
 			/>
-		<Button Text="Bearbeiten" IsVisible="{Binding CanEdit}"/>
+		<Button Text="Bearbeiten" IsVisible="{Binding CanEdit}" Clicked="Button_Clicked"/>
 	</VerticalStackLayout>
 </ContentPage>

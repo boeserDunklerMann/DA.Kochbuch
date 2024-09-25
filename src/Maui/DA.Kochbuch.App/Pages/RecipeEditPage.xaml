@@ -1,13 +1,44 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DA.Kochbuch.App.Pages.RecipeEditPage"
-             Title="RecipeEditPage">
- 
-	<VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+			xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+   			xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+			x:Class="DA.Kochbuch.App.Pages.RecipeEditPage"
+             Title="Rezept bearbeiten"
+			 xmlns:mvvm="clr-namespace:DA.Kochbuch.App.MVVM">
+	<ContentPage.BindingContext>
+		<mvvm:RecipeVM/>
+	</ContentPage.BindingContext>
+	
+	<!--https://learn.microsoft.com/de-de/dotnet/communitytoolkit/maui/converters/byte-array-to-image-source-converter-->
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageConverter"/>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+
+	<ScrollView>
+		<VerticalStackLayout>
+			<Label>Titel:</Label>
+			<Entry Text="{Binding SelectedRecipe.Name, Mode=TwoWay}"/>
+			<Label>Anzahl Personen:</Label>
+			<Entry Text="{Binding SelectedRecipe.NumberPersons, Mode=TwoWay}"/>
+
+			<HorizontalStackLayout>
+				<Label>Zutaten:</Label>
+				<ImageButton Source="add.png" Command="{Binding AddIngredientCommand}" WidthRequest="20" HeightRequest="20" />
+			</HorizontalStackLayout>
+			<ListView ItemsSource="{Binding SelectedRecipe.Ingredients}" SelectedItem="{Binding SelectedIngredient}">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<HorizontalStackLayout>
+							<Label Text="{Binding Name}"/>
+							<ImageButton Source="delete.png" HorizontalOptions="Center" Command="{Binding Source={RelativeSource AncestorType={x:Type mvvm:RecipeVM}}, Path=DelIngredientCommand}" />
+						</HorizontalStackLayout>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<Button Text="Speichern" Command="{Binding SaveCommand}"/>
+		</VerticalStackLayout>
+	</ScrollView>
 </ContentPage>
