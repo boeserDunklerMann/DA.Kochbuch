@@ -28,13 +28,16 @@ namespace DA.Kochbuch.WebAPI.Controllers
 		}
 
 		[HttpGet]
-		//[Route(nameof(User))]
 		public async Task<IEnumerable<User>> GetAllUsersAsync(string username, string password)
 		{
 			Logger.LogInformation($"running {nameof(GetAllUsersAsync)}");
 			await VerifyUserAsync(username, password, true);
 			// TODO DA: unschöner workaround
-			KochbuchContext.Recipes.ToList();
+			await KochbuchContext.Recipes
+					.Include(nameof(Recipe.Ingredients))
+					.Include(nameof(Recipe.Images))
+				.ToListAsync();
+			await KochbuchContext.Units.ToListAsync();
 
 			return await KochbuchContext.Users.Where(u => !u.Deleted).ToListAsync();
 		}
@@ -46,8 +49,15 @@ namespace DA.Kochbuch.WebAPI.Controllers
 			Logger.LogInformation($"running {nameof(GetUserAsync)}");
 			await VerifyUserAsync(username, password, true);
 
+			await KochbuchContext.Ingredients
+					.Include(nameof(Ingredient.Unit))
+				.ToListAsync();
 
-			return await KochbuchContext.Users.FirstOrDefaultAsync(u => !u.Deleted && u.ID == UserID);
+			//await KochbuchContext.Units.ToListAsync();
+
+			return await KochbuchContext.Users
+					.Include(nameof(Model.User.OwnRecipes))
+				.FirstOrDefaultAsync(u => !u.Deleted && u.ID == UserID);
 		}
 
 		[HttpPut]
