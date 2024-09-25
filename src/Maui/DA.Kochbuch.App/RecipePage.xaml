@@ -10,7 +10,7 @@
 	
     <VerticalStackLayout>
 		<HorizontalStackLayout>
-			<Label Text="Rezept von:"/>
+			<Label Text="Rezept von: "/>
 			<Label Text="{Binding SelectedRecipe.User.Name}"/>
 		</HorizontalStackLayout>
 		<Label

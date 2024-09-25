@@ -75,13 +75,6 @@ namespace DA.Kochbuch.App.MVVM
 				var usersRecipes = allUsersWithRecipes.Where(u=>u.OwnRecipes!=null).SelectMany(u => u.OwnRecipes);//.ToList();
 				_recipes.AddRange(usersRecipes.ToList());
 			}
-
-			//var recipes = await api.RecipeAllAsync(Username, Password);
-			//if (recipes != null && recipes.Any())
-			//{
-			//	_recipes.Clear();
-			//	_recipes.AddRange(recipes);
-			//}
 		}
 		#endregion
 
