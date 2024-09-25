@@ -60,14 +60,23 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			ctx.SaveChanges();
 
 			// add recipe
-			Recipe r = BaseModel.Create<Recipe>("Kartoffelsuppe");
-			r.NumberPersons = 3;
-			r.CookInstructon = "abc";
-			r.ChangeDate = DateTime.UtcNow;
-			r.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe1) });
-			r.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe2) });
-			ctx.Recipes.Add(r);
-//			ctx.SaveChanges();
+			Recipe ksuppe = BaseModel.Create<Recipe>("Kartoffelsuppe");
+			ksuppe.NumberPersons = 3;
+			ksuppe.CookInstructon = "abc";
+			ksuppe.ChangeDate = DateTime.UtcNow;
+			ksuppe.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe1) });
+			ksuppe.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe2) });
+			ctx.Recipes.Add(ksuppe);
+			
+			Recipe rbeete = BaseModel.Create<Recipe>("Rote Beete");
+			rbeete.NumberPersons = 4;
+			rbeete.CookInstructon = "Kochen, wie Pellkartoffeln, dann abschrecken und schälen";
+			rbeete.ChangeDate = DateTime.UtcNow;
+			Ingredient i3 = BaseModel.Create<Ingredient>("Rote Beete Rüben");
+			i3.Amount = 4;
+			i3.Unit = ctx.Units.First(u=>u.Name.Equals("Stk", StringComparison.OrdinalIgnoreCase));
+			rbeete.Ingredients.Add(i3);
+			ctx.Recipes.Add(rbeete);
 
 			// create user
 			User user1 = BaseModel.Create<User>("André");
@@ -75,8 +84,9 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			ctx.Users.Add(user1);
 			ctx.Users.Add(user2);
 
-			// assign user to recipe
-			r.User = user1;
+			// assign users to recipes
+			ksuppe.User = user1;
+			rbeete.User = user2;
 			ctx.SaveChanges();
 
 			// create a number of access Tokens
@@ -89,7 +99,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			}
 			// save
 			ctx.SaveChanges();
-			ctx.Ingredients.ToList().ForEach(r.Ingredients.Add);
+			ctx.Ingredients.ToList().ForEach(ksuppe.Ingredients.Add);
 			ctx.SaveChanges();
 		}
 
