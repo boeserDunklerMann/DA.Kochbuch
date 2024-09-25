@@ -9,10 +9,15 @@ namespace DA.Kochbuch.App
 			InitializeComponent();
 		}
 
-		private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+		private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			Model.Recipe? selectedRecipe = ((MainVM)(BindingContext)).SelectedRecipe;
-			Application.Current.MainPage = new NavigationPage(new RecipePage(selectedRecipe));
+			await Navigation.PushAsync(new RecipePage(selectedRecipe));
         }
-    }
+
+		private async void ContentPage_Loaded(object sender, EventArgs e)
+		{
+			await ((MainVM)(BindingContext)).LoadDataAsync();
+		}
+	}
 }

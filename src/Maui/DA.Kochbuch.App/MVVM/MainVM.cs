@@ -53,9 +53,8 @@ namespace DA.Kochbuch.App.MVVM
 			_recipes = new ObservableCollection<Recipe>();
 		}
 
-		#region private methods
-
-		private async void LoadDataAsync()
+		#region public methods
+		public async Task LoadDataAsync()
 		{
 			if (api == null)
 				throw new NullReferenceException(nameof(api));
@@ -78,8 +77,15 @@ namespace DA.Kochbuch.App.MVVM
 		}
 		#endregion
 
+		#region private methods
+		private void LoadData()
+		{
+			LoadDataAsync().Wait();
+		}
+		#endregion
+
 		#region Commands
-		public DelegateCommand LoadDataCommand => new DelegateCommand(LoadDataAsync);
+		public DelegateCommand LoadDataCommand => new DelegateCommand(LoadData);
 		#endregion
 	}
 }
