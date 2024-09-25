@@ -1,6 +1,7 @@
 ﻿using DA.Kochbuch.Model.Authorization;
 using DA.Kochbuch.Model.UnitsTypes;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DA.Kochbuch.Model
 {
@@ -15,6 +16,7 @@ namespace DA.Kochbuch.Model
 		public DbSet<User> Users { get; set; }
 		public DbSet<IngredientUnit> Units { get; set; }
 		public DbSet<AccessToken> AccessTokens { get; set; }
+		public DbSet<Recipeimage> RecipeImages { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

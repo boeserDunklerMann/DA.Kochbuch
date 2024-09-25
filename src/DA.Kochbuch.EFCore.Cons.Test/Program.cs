@@ -67,7 +67,8 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			ksuppe.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe1) });
 			ksuppe.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe2) });
 			ctx.Recipes.Add(ksuppe);
-			
+			ctx.RecipeImages.AddRange(ksuppe.Images);
+
 			Recipe rbeete = BaseModel.Create<Recipe>("Rote Beete");
 			rbeete.NumberPersons = 4;
 			rbeete.CookInstructon = "Kochen, wie Pellkartoffeln, dann abschrecken und schälen";
@@ -99,7 +100,7 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			}
 			// save
 			ctx.SaveChanges();
-			ctx.Ingredients.ToList().ForEach(ksuppe.Ingredients.Add);
+			//ctx.Ingredients.ToList().ForEach(ksuppe.Ingredients.Add);
 			ctx.SaveChanges();
 		}
 
