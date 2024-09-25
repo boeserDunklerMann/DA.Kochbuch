@@ -5,6 +5,7 @@ namespace DA.Kochbuch.App.MVVM
 {
 	/// <ChangeLog>
 	/// <Create Datum="18.09.2024" Entwickler="DA" />
+	/// <Change Datum="25.09.2024" Entwickler="DA">CanEdit added</Change>
 	/// </ChangeLog>
 	public class RecipeVM : BaseViewModel, INotifyPropertyChanged, IDisposable
 	{
