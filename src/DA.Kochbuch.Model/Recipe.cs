@@ -7,6 +7,7 @@ namespace DA.Kochbuch.Model
 	/// <ChangeLog>
 	/// <Create Datum="24.07.2024" Entwickler="DA" />
 	/// </ChangeLog>
+	/// <Change Datum="25.09.2024" Entwickler="DA">Prop Images added</Change>
 	public class Recipe : BaseModel
 	{
 		/// <summary>
@@ -18,6 +19,7 @@ namespace DA.Kochbuch.Model
 		[JsonIgnore]
 		public virtual User User { get; set; }
 		public string? CookInstructon { get; set; }// = string.Empty;
+		public ICollection<Recipeimage> Images { get; set; } = new List<Recipeimage>();
 	}
 }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

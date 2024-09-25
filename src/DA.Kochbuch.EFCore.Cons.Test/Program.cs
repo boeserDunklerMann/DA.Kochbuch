@@ -2,6 +2,7 @@
 using DA.Kochbuch.Model.Authorization;
 using DA.Kochbuch.Model.UnitsTypes;
 using System.Text.Json;
+using System.Drawing;
 
 namespace DA.Kochbuch.EFCore.Cons.Test
 {
@@ -15,14 +16,27 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 		{
 			Console.WriteLine("Hello, World!");
 			Console.WriteLine("Drop database before running");
-			//InsertData();
+			InsertData();
 			ReadData();
+		}
+
+		static byte[] Image2ByteArray(Image image)
+		{
+			using (MemoryStream ms = new MemoryStream())
+			{
+				image.Save(ms, image.RawFormat);
+				return ms.ToArray();
+			}
 		}
 
 		static void InsertData()
 		{
 			using KochbuchContext ctx = new KochbuchContext("Server=192.168.2.108;Database=Kochbuch_dev;Uid=root;Pwd=only4sus;");
 			ctx.Database.EnsureCreated();   // create DB if not exists
+
+			// load images...
+			Image suppe1 = Image.FromFile(@"D:\git\DA.Kochbuch\temp\einfache-kartoffelsuppe.jpg");
+			Image suppe2 = Image.FromFile(@"D:\git\DA.Kochbuch\temp\einfache-kartoffelsuppe (1).jpg");
 
 			// add units
 			IngredientUnit unit = BaseModel.Create<IngredientUnit>("kg"); //{ ID = 1, Name = "kg" };
@@ -50,6 +64,8 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			r.NumberPersons = 3;
 			r.CookInstructon = "abc";
 			r.ChangeDate = DateTime.UtcNow;
+			r.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe1) });
+			r.Images.Add(new Recipeimage() { Image = Image2ByteArray(suppe2) });
 			ctx.Recipes.Add(r);
 //			ctx.SaveChanges();
 
