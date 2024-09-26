@@ -4,7 +4,9 @@ namespace DA.Kochbuch.Model
 {
 	/// <ChangeLog>
 	/// <Create Datum="25.07.2024" Entwickler="DA" />
-	/// </ChangeLog>
+	/// <Change Datum="26.09.2024" Entwickler="DA">prop GoogleID addêd</Change>
+
+		/// </ChangeLog>
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable. AD: Darum kümmert sich EFCore
 	public class User : BaseModel
 	{
@@ -23,7 +25,8 @@ namespace DA.Kochbuch.Model
 		/// </summary>
 		//public virtual ICollection<User> Subscriptions { get; set; }
 
-		public override bool Equals(object? obj)
+		public string GoogleID { get; set; } = "";
+        public override bool Equals(object? obj)
 		{
 			if (obj == null || !(obj is User))
 				return false;

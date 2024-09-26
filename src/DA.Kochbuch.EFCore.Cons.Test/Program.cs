@@ -72,6 +72,8 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 			ri2.Image = Image2ByteArray(suppe2);
 			ksuppe.Images.Add(ri1);
 			ksuppe.Images.Add(ri2);
+			ksuppe.Ingredients.Add(i1);
+			ksuppe.Ingredients.Add(i2);
 
 			ctx.Recipes.Add(ksuppe);
 			ctx.RecipeImages.AddRange(ksuppe.Images);
@@ -88,6 +90,8 @@ namespace DA.Kochbuch.EFCore.Cons.Test
 
 			// create user
 			User user1 = BaseModel.Create<User>("André");
+			user1.GoogleID = "102882888849269001816";
+
 			User user2 = BaseModel.Create<User>("Die Süße vom Fristo");
 			ctx.Users.Add(user1);
 			ctx.Users.Add(user2);
