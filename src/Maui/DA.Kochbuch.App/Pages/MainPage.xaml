@@ -38,7 +38,8 @@
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
-        </VerticalStackLayout>
+			<Button x:Name="btnLogin" Text="Login" Clicked="btnLogin_Clicked" />
+		</VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DA.Kochbuch.ApiClient.Cons.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maui", "Maui", "{C84889F8-DFC3-4AA1-B18B-7F151405F10A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Kochbuch.App", "Maui\DA.Kochbuch.App\DA.Kochbuch.App.csproj", "{AF26E22D-DA54-4CAE-9274-8A7A9853F399}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DA.Kochbuch.App", "Maui\DA.Kochbuch.App\DA.Kochbuch.App.csproj", "{AF26E22D-DA54-4CAE-9274-8A7A9853F399}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

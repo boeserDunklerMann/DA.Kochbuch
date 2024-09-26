@@ -83,4 +83,10 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+	  <PackageReference Include="GoogleGson">
+	    <Version>2.11.0.3</Version>
+	  </PackageReference>
+	</ItemGroup>
+
 </Project>
