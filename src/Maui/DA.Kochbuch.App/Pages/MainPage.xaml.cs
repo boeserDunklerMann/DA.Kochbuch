@@ -24,43 +24,41 @@ namespace DA.Kochbuch.App
 			await ((MainVM)(BindingContext)).LoadDataAsync();
 		}
 
-		private void btnLogin_Clicked(object sender, EventArgs e)
+		private async void btnLogin_Clicked(object sender, EventArgs e)
 		{
-			WebView signInWebView = new WebView
+			using (Auth auth = new Auth("371013138451-6uc53r25qa6mgjm98sea4rp25p3eovum.apps.googleusercontent.com", "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"))	// TODO DA: from cfg!
 			{
-				Source = Auth.ConstructGoogleSignInUrl(),
-				VerticalOptions = LayoutOptions.Fill
-			};
-			// Dirty workaround: "google in mobile apps doesn't allow auth2.0 authentication via webview for security reasons":
-			// https://stackoverflow.com/a/69342626/12445867
-			signInWebView.UserAgent = $"Mozilla/5.0 (Linux; Android {DeviceInfo.Current.Version.Major}.{DeviceInfo.Current.Version.Minor}; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Mobile Safari/537.36";
-			
-			Grid grid = new Grid();
-			grid.RowDefinitions.Add(new RowDefinition { Height= GridLength.Star }); // row for webview
-			grid.SetRow(signInWebView, 0);
-			grid.Children.Add(signInWebView);
-			ContentPage signInContentPage = new ContentPage
-			{
-				Content = grid,
-			};
-			Application.Current.MainPage.Navigation.PushModalAsync(signInContentPage);
-			signInWebView.Navigating += (sender, e) =>
-			{
-				string? code = Auth.OnWebViewNavigating(e, signInContentPage);
-				if (e.Url.StartsWith("http://localhost") && code != null)
+				WebView signInWebView = new WebView
 				{
-					Console.WriteLine($"code: {code}");
-					(string access_token, string refresh_token) = Auth.ExchangeCodeForAccessToken(code);
-					if (access_token != null && refresh_token != null)
+					Source = auth.ConstructGoogleSignInUrl(),
+					VerticalOptions = LayoutOptions.Fill
+				};
+				// Dirty workaround: "google in mobile apps doesn't allow auth2.0 authentication via webview for security reasons":
+				// https://stackoverflow.com/a/69342626/12445867
+				signInWebView.UserAgent = $"Mozilla/5.0 (Linux; Android {DeviceInfo.Current.Version.Major}.{DeviceInfo.Current.Version.Minor}; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Mobile Safari/537.36";
+
+				Grid grid = new Grid();
+				grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star }); // row for webview
+				grid.SetRow(signInWebView, 0);
+				grid.Children.Add(signInWebView);
+				ContentPage signInContentPage = new ContentPage
+				{
+					Content = grid,
+				};
+				await Navigation.PushModalAsync(signInContentPage);
+				signInWebView.Navigating += async (sender, e) =>
+				{
+					string? code = auth.OnWebViewNavigating(e, signInContentPage);
+					if (e.Url.StartsWith("http://localhost") && code != null)
 					{
-						Console.WriteLine($"access_token:  {access_token}");
-						Console.WriteLine($"refresh_token: {refresh_token}");
-						Auth.GetUsersDetailsAsync(code);
-						Auth.GetUsersDetailsAsync(access_token);
-						Auth.GetUsersDetailsAsync(refresh_token);
+						(string? access_token, string? refresh_token) = await auth.ExchangeCodeForAccessTokenAsync(code);
+						if (access_token != null && refresh_token != null)
+						{
+							await auth.GetUsersDetailsAsync(access_token);
+						}
 					}
-				}
-			};
+				};
+			}
 		}
 	}
 }

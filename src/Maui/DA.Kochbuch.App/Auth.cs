@@ -1,26 +1,30 @@
 ﻿using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Security;
 using System.Net;
 
 namespace DA.Kochbuch.App
 {
 	/// <ChangeLog>
 	/// <Create Datum="26.09.2024" Entwickler="DA" />
+	/// <Change Datum="26.09.2024" Entwickler="DA">class made non-static</Change>
 	/// </ChangeLog>
 	/// <remarks>
 	/// https://github.com/JayMalli/Google_OAuth2.0-MAUI
 	/// https://dev.to/jaymalli_programmer/google-oauth-20-authorization-service-implementation-in-net-maui-okl
 	/// </remarks>
-	public static class Auth
+	public class Auth(string clientID, string clientSecret) : IDisposable
 	{
-		public static string ConstructGoogleSignInUrl()
+		private HttpClient? _httpClient = new HttpClient();
+
+		public string ConstructGoogleSignInUrl()
 		{
 			// Specify the necessary parameters for the Google Sign-In URL
-			const string clientId = "371013138451-6uc53r25qa6mgjm98sea4rp25p3eovum.apps.googleusercontent.com";
+			string clientId = clientID; 
 
-			const string responseType = "code";
-			const string accessType = "offline";
-			const string redirect_uri = "http://localhost:8080";
-			const string scope = "https://www.googleapis.com/auth/drive";
+			string responseType = "code";
+			string accessType = "offline";
+			string redirect_uri = "http://localhost:8080";
+			string scope = "https://www.googleapis.com/auth/userinfo.profile";
 
 			// Construct the Google Sign-In URL
 			return "https://accounts.google.com/o/oauth2/v2/auth" +
@@ -33,45 +37,49 @@ namespace DA.Kochbuch.App
 							"&prompt=consent";
 		}
 
-		public static string? OnWebViewNavigating(WebNavigatingEventArgs e, ContentPage signInContentPage)
+		public string? OnWebViewNavigating(WebNavigatingEventArgs e, ContentPage signInContentPage)
 		{
 			if (e.Url.StartsWith("http://localhost"))
 			{
 				Uri uri = new Uri(e.Url);
 				string query = WebUtility.UrlDecode(uri.Query);
 				var queryParams = System.Web.HttpUtility.ParseQueryString(query);
-				string authorizationCode = queryParams.Get("code");
+				if (queryParams == null)
+				{
+					throw new NullReferenceException(nameof(queryParams));
+				}
+				string? authorizationCode = queryParams.Get("code");
 
 				signInContentPage.Navigation.PopModalAsync();
 				return authorizationCode;
 			}
 			return null;
 		}
-		public static (string?, string?) ExchangeCodeForAccessToken(string code)
+
+		public async Task<(string?, string?)> ExchangeCodeForAccessTokenAsync(string code)
 		{
 			// Configure the necessary parameters for the token exchange
-			const string clientId = "371013138451-6uc53r25qa6mgjm98sea4rp25p3eovum.apps.googleusercontent.com";
-			const string clientSecret = "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";
+			//const string clientId = "371013138451-6uc53r25qa6mgjm98sea4rp25p3eovum.apps.googleusercontent.com";
+			//const string client_secret = clientSecret; 
 			const string redirectUri = "http://localhost:8080";
 
-			// Create an instance of HttpClient
-			using (HttpClient client = new HttpClient())
-			{
-				// Construct the token exchange URL
-				const string tokenUrl = "https://oauth2.googleapis.com/token";
+			// Construct the token exchange URL
+			const string tokenUrl = "https://oauth2.googleapis.com/token";
 
-				// Create a FormUrlEncodedContent object with the required parameters
-				FormUrlEncodedContent content = new FormUrlEncodedContent(new Dictionary<string, string>
+			// Create a FormUrlEncodedContent object with the required parameters
+			FormUrlEncodedContent content = new FormUrlEncodedContent(new Dictionary<string, string>
 			  {
 				   { "code", code },
-				   { "client_id", clientId },
+				   { "client_id", clientID },
 				   { "client_secret", clientSecret },
 				   { "redirect_uri", redirectUri },
 				   { "grant_type", "authorization_code" }
 			  });
 
-				// Send a POST request to the token endpoint to exchange the code for an access token
-				HttpResponseMessage response = client.PostAsync(tokenUrl, content).Result;
+			// Send a POST request to the token endpoint to exchange the code for an access token
+			if (_httpClient != null)
+			{
+				HttpResponseMessage response = await _httpClient.PostAsync(tokenUrl, content);
 
 				// Check if the request was successful
 				if (response.IsSuccessStatusCode)
@@ -79,35 +87,49 @@ namespace DA.Kochbuch.App
 					// Read the response content
 					string responseContent = response.Content.ReadAsStringAsync().Result;
 
-					// Parse the JSON response to extract the access token
+					// Parse the JSON response to extract the tokens
 					JObject json = JObject.Parse(responseContent);
-					string accessToken = json.GetValue("access_token").ToString();
-					string refreshToken = json.GetValue("refresh_token").ToString();
+					string? accessToken = json.GetValue("access_token")?.ToString();
+					string? refreshToken = json.GetValue("refresh_token")?.ToString();
+
 					return (accessToken, refreshToken);
 				}
-
 				else
 				{
-					// Exception:  "Token exchange request failed with status code: {response.StatusCode}"
+					throw new ApplicationException($"Token exchange request failed with status code: {response.StatusCode}");
 				}
 			}
-
-			return (null, null);
+			else
+				throw new NullReferenceException(nameof(_httpClient));
 		}
-		public static async void GetUsersDetailsAsync(string accessToken)
+		public async Task GetUsersDetailsAsync(string accessToken)
 		{
+			// https://stackoverflow.com/a/7138474/12445867
+
 			string url = $"https://www.googleapis.com/oauth2/v3/userinfo?access_token={accessToken}";
-			using(HttpClient client = new HttpClient())
+			if (_httpClient != null)
 			{
-				HttpResponseMessage response = await client.GetAsync(url);
+				HttpResponseMessage response = await _httpClient.GetAsync(url);
 				if (response.IsSuccessStatusCode)
 				{
-					JObject jsonObj = JObject.Parse(await response.Content.ReadAsStringAsync());
+					string jsonString = await response.Content.ReadAsStringAsync();
+					JObject jsonObj = JObject.Parse(jsonString);
 					if (jsonObj != null)
 					{
 
 					}
 				}
+			}
+			else
+				throw new NullReferenceException(nameof(_httpClient));
+		}
+
+		public void Dispose()
+		{
+			if (_httpClient != null)
+			{
+				_httpClient.Dispose();
+				_httpClient = null;
 			}
 		}
 	}
