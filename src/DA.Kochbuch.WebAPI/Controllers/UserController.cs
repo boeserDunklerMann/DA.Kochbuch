@@ -39,13 +39,6 @@ namespace DA.Kochbuch.WebAPI.Controllers
 			Logger.LogInformation($"running {nameof(GetAllUsersAsync)}");
 			await VerifyUserAsync(username, password, true);
 
-			// DONE DA: unschöner workaround
-			//await KochbuchContext.Recipes
-			//		.Include(nameof(Recipe.Ingredients))
-			//		.Include(nameof(Recipe.Images))
-			//	.ToListAsync();
-			//await KochbuchContext.Units.ToListAsync();
-
 			return await KochbuchContext.Users
 					.Include(nameof(Model.User.OwnRecipes))
 				.Where(u => !u.Deleted).ToListAsync();
@@ -65,6 +58,17 @@ namespace DA.Kochbuch.WebAPI.Controllers
 			return await KochbuchContext.Users
 					.Include(nameof(Model.User.OwnRecipes))
 				.FirstOrDefaultAsync(u => !u.Deleted && u.ID == UserID);
+		}
+
+		[HttpGet]
+		[Route("google/{GoogleID}/{username}/{password}")]
+		public async Task<User> GetUserByGoogleIDAsync(string username, string password, string GoogleID)
+		{
+			Logger.LogInformation($"running {nameof(GetUserByGoogleIDAsync)}");
+			await VerifyUserAsync(username, password, true);
+			return await KochbuchContext.Users
+					.Include(nameof(Model.User.OwnRecipes))
+				.FirstOrDefaultAsync(u => !u.Deleted && u.GoogleID == GoogleID);
 		}
 
 		[HttpPut]
