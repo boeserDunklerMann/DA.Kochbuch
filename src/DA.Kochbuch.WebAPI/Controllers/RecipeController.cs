@@ -56,6 +56,23 @@ namespace DA.Kochbuch.WebAPI.Controllers
 				.FirstOrDefaultAsync(r => !r.Deleted && r.ID == RecipeID);
 		}
 
+		[HttpGet]
+		[Route("user/{UserID}/{username}/{password}")]
+		public async Task<IEnumerable<Recipe>> GetRecipesByUserIDAsync(string username, string password,int UserID)
+		{
+			Logger.LogInformation($"running {nameof(GetRecipesByUserIDAsync)}");
+			await VerifyUserAsync(username, password, true);
+
+			KochbuchContext.Units.ToList();
+			KochbuchContext.Users.ToList();
+
+			return await KochbuchContext.Recipes
+					.Include(nameof(Recipe.Ingredients))
+					.Include(nameof(Recipe.Images))
+					.Include(nameof(Recipe.User))
+				.Where(r => !r.Deleted && r.User.ID == UserID).ToListAsync();
+		}
+
 		[HttpPut]
 		public async Task<IActionResult> UpdateRecipeAsync(string username, string password, Recipe recipe)
 		{
