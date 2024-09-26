@@ -102,7 +102,7 @@ namespace DA.Kochbuch.App.Authorization
             else
                 throw new NullReferenceException(nameof(_httpClient));
         }
-        public async Task GetUsersDetailsAsync(string accessToken)
+        public async Task<GoogleUser?> GetUsersDetailsAsync(string accessToken)
         {
             // https://stackoverflow.com/a/7138474/12445867
 
@@ -116,11 +116,17 @@ namespace DA.Kochbuch.App.Authorization
                     JObject jsonObj = JObject.Parse(jsonString);
                     if (jsonObj != null)
                     {
-
+                        var user = jsonObj.ToObject(typeof(GoogleUser));
+                        return user as GoogleUser;
                     }
+                    return null;
                 }
-            }
-            else
+				else
+				{
+					throw new ApplicationException($"Userinfo request failed with status code: {response.StatusCode}");
+				}
+			}
+			else
                 throw new NullReferenceException(nameof(_httpClient));
         }
 

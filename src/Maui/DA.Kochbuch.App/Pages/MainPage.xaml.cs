@@ -9,6 +9,7 @@ namespace DA.Kochbuch.App
     /// </ChangeLog>
     public partial class MainPage : ContentPage
 	{
+		private GoogleUser? googleUser;
 		public MainPage()
 		{
 			InitializeComponent();
@@ -56,7 +57,7 @@ namespace DA.Kochbuch.App
 						(string? access_token, string? refresh_token) = await authorize.ExchangeCodeForAccessTokenAsync(code);
 						if (access_token != null && refresh_token != null)
 						{
-							await authorize.GetUsersDetailsAsync(access_token);
+							googleUser = await authorize.GetUsersDetailsAsync(access_token);
 						}
 					}
 				};
