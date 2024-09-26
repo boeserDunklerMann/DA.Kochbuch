@@ -53,7 +53,7 @@ namespace DA.Kochbuch.App.MVVM
 			Username = "ab";
 			Password = "cd";
 
-			CurrentUser = api.UserAllAsync(Username, Password).Result.First(u => u.Name.Equals("André", StringComparison.InvariantCultureIgnoreCase));
+			//CurrentUser = api.UserAllAsync(Username, Password).Result.First(u => u.Name.Equals("André", StringComparison.InvariantCultureIgnoreCase));
 		}
 	}
 }

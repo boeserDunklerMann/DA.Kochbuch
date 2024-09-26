@@ -56,26 +56,31 @@ namespace DA.Kochbuch.App.MVVM
 		#region public methods
 		public async Task LoadDataAsync()
 		{
-			if (api == null)
-				throw new NullReferenceException(nameof(api));
-
-			var allUsersWithRecipes = await api.UserAllAsync(Username, Password);
-
-			// TODO DA: unschön, aber funktioniert
-			allUsersWithRecipes.ToList().ForEach(u =>
+			if (Globals.GoogleUser != null)
 			{
-				if (u.OwnRecipes!=null && u.OwnRecipes.Any())
-					u.OwnRecipes.ToList().ForEach(r => r.User = u);
-			});
+				if (api == null)
+					throw new NullReferenceException(nameof(api));
+				if (Username==null || Password==null)
+				{
+					throw new NullReferenceException($"need Username and Password for WebAPI");
+				}
 
-			if (allUsersWithRecipes != null && allUsersWithRecipes.Any())
-			{
+				var mySelf = await api.GoogleAsync(Username, Password, Globals.GoogleUser.sub);
+				if (mySelf == null)
+				{
+					throw new ApplicationException($"GoogleID {Globals.GoogleUser.sub} not found!");
+				}
+				CurrentUser = mySelf;
+				var myRecipes = await api.UserAsync(Username, Password, mySelf.ID);
 				_recipes.Clear();
-				var usersRecipes = allUsersWithRecipes.Where(u=>u.OwnRecipes!=null).SelectMany(u => u.OwnRecipes);//.ToList();
-				_recipes.AddRange(usersRecipes.ToList());
+				_recipes.AddRange(myRecipes);
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
 			}
-		}
+			else
+            {
+                // not logged in
+            }
+        }
 		#endregion
 
 		#region private methods

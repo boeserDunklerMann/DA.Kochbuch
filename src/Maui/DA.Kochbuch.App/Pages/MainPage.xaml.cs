@@ -57,7 +57,10 @@ namespace DA.Kochbuch.App
 						(string? access_token, string? refresh_token) = await authorize.ExchangeCodeForAccessTokenAsync(code);
 						if (access_token != null && refresh_token != null)
 						{
-							googleUser = await authorize.GetUsersDetailsAsync(access_token);
+							Globals.AccessToken = access_token;
+							Globals.RefreshToken = refresh_token;
+							Globals.GoogleUser = await authorize.GetUsersDetailsAsync(access_token);
+							await ((MainVM)(BindingContext)).LoadDataAsync();
 						}
 					}
 				};

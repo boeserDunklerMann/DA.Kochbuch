@@ -27,7 +27,7 @@
 			</HorizontalStackLayout>
 			
 			<Label
-				Text="alle Rezepte"
+				Text="Meine Rezepte"
 				Style="{StaticResource Headline}"
 				SemanticProperties.HeadingLevel="Level3" />
 			
