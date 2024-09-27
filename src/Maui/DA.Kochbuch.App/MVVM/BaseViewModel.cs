@@ -1,16 +1,12 @@
-﻿using DA.Kochbuch.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DA.Kochbuch.App.Authorization;
+using DA.Kochbuch.Model;
 
 namespace DA.Kochbuch.App.MVVM
 {
 	/// <ChangeLog>
 	/// <Create Datum="18.09.2024" Entwickler="DA" />
 	/// <Change Datum="25.09.2024" Entwickler="DA">prop CurrentUser added</Change>
+	/// <Change Datum="27.09.2024" Entwickler="DA">prop GoogleUser added</Change>
 	/// </ChangeLog>
 	public class BaseViewModel : IDisposable
 	{
@@ -39,6 +35,10 @@ namespace DA.Kochbuch.App.MVVM
 		/// The user, who is currently logged in
 		/// </summary>
 		public User? CurrentUser { get; set; }
+		/// <summary>
+		/// The corresponding GoogleUser for <see cref="CurrentUser" />
+		/// </summary>
+		public GoogleUser? GoogleUser => Globals.GoogleUser;
 		#endregion
 
 		public void Dispose()
