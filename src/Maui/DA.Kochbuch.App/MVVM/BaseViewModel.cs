@@ -46,11 +46,16 @@ namespace DA.Kochbuch.App.MVVM
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			if (http != null)
+			{
+				http.Dispose();
+				http = null;
+			}
 		}
 
 		public BaseViewModel()
 		{
+			//Settings settings=Settings.Create();
 			http = new HttpClient();
 			api = new ApiClient.Client("http://192.168.2.108:5002/", http); // TODO DA: from cfg
 			Username = "ab";

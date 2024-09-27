@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
 
 namespace DA.Kochbuch.App
 {
@@ -16,7 +18,13 @@ namespace DA.Kochbuch.App
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 					fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 				});
-
+			var a = Assembly.GetExecutingAssembly();
+			using (var stream = a.GetManifestResourceStream("DA.Kochbuch.App.appsetings.json"))
+			{
+				var config = new ConfigurationBuilder().AddJsonStream(stream).Build();
+				builder.Configuration.AddConfiguration(config);
+			}
+			
 #if DEBUG
 			builder.Logging.AddDebug();
 #endif
