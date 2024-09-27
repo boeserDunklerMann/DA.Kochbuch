@@ -11,25 +11,18 @@
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
+			<ImageButton Source="setting.png" WidthRequest="20" HeightRequest="20" HorizontalOptions="End" x:Name="btnSettings" Clicked="btnSettings_Clicked"/>
 			<Image
                 Source="kitchen_tools.png"
                 HeightRequest="185"
                 Aspect="AspectFit"
                 SemanticProperties.Description="kitchen tools" />
-			
-			<Label Text="Zugangsdaten"/>
-			
-			<HorizontalStackLayout>
-				<Label>Benutzername:</Label>
-				<Entry Text="{Binding Username}" />
-				<Label>Passwort:</Label>
-				<Entry IsPassword="True" Text="{Binding Password}" />
-			</HorizontalStackLayout>
-			
+						
 			<Label
 				Text="Meine Rezepte"
 				Style="{StaticResource Headline}"
-				SemanticProperties.HeadingLevel="Level3" />
+				SemanticProperties.HeadingLevel="Level3"
+				IsVisible="{Binding LoggedIn}" />
 			
 			<ListView ItemsSource="{Binding Recipes}" SelectedItem="{Binding SelectedRecipe}" ItemSelected="ListView_ItemSelected">
 				<ListView.ItemTemplate>

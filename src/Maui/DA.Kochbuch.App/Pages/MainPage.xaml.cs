@@ -66,5 +66,10 @@ namespace DA.Kochbuch.App
 				};
 			}
 		}
-	}
+
+		private void btnSettings_Clicked(object sender, EventArgs e)
+		{
+			Navigation.PushAsync(new Pages.SettingsPage());
+        }
+    }
 }
