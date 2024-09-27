@@ -7,6 +7,7 @@ namespace DA.Kochbuch.App.MVVM
 	/// <Create Datum="18.09.2024" Entwickler="DA" />
 	/// <Change Datum="25.09.2024" Entwickler="DA">prop CurrentUser added</Change>
 	/// <Change Datum="27.09.2024" Entwickler="DA">prop GoogleUser added</Change>
+	/// <Change Datum="27.09.2024" Entwickler="DA">prop LoggedIn added</Change>
 	/// </ChangeLog>
 	public class BaseViewModel : IDisposable
 	{
@@ -39,6 +40,8 @@ namespace DA.Kochbuch.App.MVVM
 		/// The corresponding GoogleUser for <see cref="CurrentUser" />
 		/// </summary>
 		public GoogleUser? GoogleUser => Globals.GoogleUser;
+
+		public bool LoggedIn => this.GoogleUser != null;
 		#endregion
 
 		public void Dispose()
