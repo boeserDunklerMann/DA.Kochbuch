@@ -1,0 +1,14 @@
+﻿using DA.Kochbuch.Blazor.Server.Model;
+
+namespace DA.Kochbuch.Blazor.Server.Interfaces
+{
+	/// <ChangeLog>
+	/// <Create Datum="24.04.2025" Entwickler="DA" />
+	/// </ChangeLog>
+	public interface IKochbuch
+	{
+		Task<List<Ingredient>> GetIngredientsAsync();
+		Task<List<Unit>> GetUnitsAsync();
+		Task<List<Recipe>> GetRecipesAsync();
+	}
+}

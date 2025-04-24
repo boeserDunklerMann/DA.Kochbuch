@@ -1,9 +1,18 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using DA.Kochbuch.Blazor.Server.DataAccess;
+using DA.Kochbuch.Blazor.Server.GraphQL;
+using DA.Kochbuch.Blazor.Server.Interfaces;
+using DA.Kochbuch.Blazor.Server.Model;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration.AddJsonFile("appsettings.local.json");
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddPooledDbContextFactory<KochbuchContext>(opts =>
+	opts.UseMySQL(builder.Configuration.GetConnectionString("default")!));
+builder.Services.AddScoped<IKochbuch, KochbuchDataAccessLayer>();
+builder.Services.AddGraphQLServer()
+	.AddQueryType<KochbuchQueryResolver>();
 
 var app = builder.Build();
 
@@ -23,6 +32,7 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.MapGraphQL();
 
 app.MapRazorPages();
 app.MapControllers();
