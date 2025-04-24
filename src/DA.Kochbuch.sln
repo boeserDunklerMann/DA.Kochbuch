@@ -17,6 +17,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maui", "Maui", "{C84889F8-D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DA.Kochbuch.App", "Maui\DA.Kochbuch.App\DA.Kochbuch.App.csproj", "{AF26E22D-DA54-4CAE-9274-8A7A9853F399}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Kochbuch.Blazor.Server", "DA.Kochbuch.Blazor\Server\DA.Kochbuch.Blazor.Server.csproj", "{8AB49AF6-BF3A-44E4-AF3B-2D6FDAD958EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Kochbuch.Blazor.Client", "DA.Kochbuch.Blazor\Client\DA.Kochbuch.Blazor.Client.csproj", "{57F91930-4C1E-408F-9AF8-DE8EB3B9AC57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Kochbuch.Blazor.Shared", "DA.Kochbuch.Blazor\Shared\DA.Kochbuch.Blazor.Shared.csproj", "{7EB906E4-537A-4193-A4D1-66DE32FE0A47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +55,18 @@ Global
 		{AF26E22D-DA54-4CAE-9274-8A7A9853F399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF26E22D-DA54-4CAE-9274-8A7A9853F399}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF26E22D-DA54-4CAE-9274-8A7A9853F399}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8AB49AF6-BF3A-44E4-AF3B-2D6FDAD958EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AB49AF6-BF3A-44E4-AF3B-2D6FDAD958EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AB49AF6-BF3A-44E4-AF3B-2D6FDAD958EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AB49AF6-BF3A-44E4-AF3B-2D6FDAD958EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57F91930-4C1E-408F-9AF8-DE8EB3B9AC57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57F91930-4C1E-408F-9AF8-DE8EB3B9AC57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57F91930-4C1E-408F-9AF8-DE8EB3B9AC57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57F91930-4C1E-408F-9AF8-DE8EB3B9AC57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EB906E4-537A-4193-A4D1-66DE32FE0A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EB906E4-537A-4193-A4D1-66DE32FE0A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EB906E4-537A-4193-A4D1-66DE32FE0A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EB906E4-537A-4193-A4D1-66DE32FE0A47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
