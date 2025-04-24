@@ -1,0 +1,10 @@
+﻿mutation AddRecipeData($recipeData:RecipeInput!)
+{
+	addRecipe(recipe:$recipeData)
+	{
+		recipe
+		{
+			name
+		}
+	}
+}

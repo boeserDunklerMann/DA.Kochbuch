@@ -1,0 +1,145 @@
+schema {
+  query: KochbuchQueryResolver
+  mutation: KochbuchMutationResolver
+}
+
+type KochbuchQueryResolver {
+  "Gets all recipes."
+  recipes: [Recipe!]!
+  "Gets all units."
+  units: [Unit!]!
+  "Gets all ingredients."
+  ingredients: [Ingredient!]!
+}
+
+type KochbuchMutationResolver {
+  "Adds new recipe data."
+  addRecipe(recipe: RecipeInput!): AddRecipePayload!
+}
+
+type Ingredient {
+  id: Int!
+  amount: Float!
+  unitId: Int
+  recipeId: Int
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  recipe: Recipe
+  unit: Unit
+}
+
+type Unit {
+  id: Int!
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  ingredients: [Ingredient!]!
+}
+
+type Recipe {
+  id: Int!
+  numberPersons: Int!
+  userId: Int!
+  cookInstructon: String!
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  ingredients: [Ingredient!]!
+  recipeImages: [RecipeImage!]!
+  user: User!
+}
+
+type AddRecipePayload {
+  recipe: Recipe!
+}
+
+input RecipeInput {
+  id: Int!
+  numberPersons: Int!
+  userId: Int!
+  cookInstructon: String!
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  ingredients: [IngredientInput!]!
+  recipeImages: [RecipeImageInput!]!
+  user: UserInput!
+}
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime
+
+type User {
+  id: Int!
+  googleId: String!
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  recipes: [Recipe!]!
+}
+
+type RecipeImage {
+  id: Int!
+  image: [Byte!]
+  recipeId: Int
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  recipe: Recipe
+}
+
+input IngredientInput {
+  id: Int!
+  amount: Float!
+  unitId: Int
+  recipeId: Int
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  recipe: RecipeInput
+  unit: UnitInput
+}
+
+input RecipeImageInput {
+  id: Int!
+  image: [Byte!]
+  recipeId: Int
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  recipe: RecipeInput
+}
+
+input UserInput {
+  id: Int!
+  googleId: String!
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  recipes: [RecipeInput!]!
+}
+
+"The `Byte` scalar type represents non-fractional whole numeric values. Byte can represent values between 0 and 255."
+scalar Byte
+
+input UnitInput {
+  id: Int!
+  name: String!
+  changeDate: DateTime
+  creationDate: DateTime
+  deleted: Boolean!
+  ingredients: [IngredientInput!]!
+}
+
+"The purpose of the `cost` directive is to define a `weight` for GraphQL types, fields, and arguments. Static analysis can use these weights when calculating the overall cost of a query or response."
+directive @cost("The `weight` argument defines what value to add to the overall cost for every appearance, or possible appearance, of a type, field, argument, etc." weight: String!) on SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM | INPUT_FIELD_DEFINITION

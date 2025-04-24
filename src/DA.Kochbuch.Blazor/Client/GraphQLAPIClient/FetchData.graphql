@@ -1,0 +1,21 @@
+﻿query FetchUnitsList
+{
+	units
+	{
+		id, name, creationDate, changeDate, deleted
+	}
+}
+query FetchIngredientsList
+{
+	ingredients
+	{
+	id, name, creationDate, deleted, changeDate, recipeId, amount, unitId
+	}
+}
+query FetchRecipesList
+{
+	recipes
+	{
+	id, numberPersons, name, userId, cookInstructon, changeDate, creationDate, deleted
+	}
+}
