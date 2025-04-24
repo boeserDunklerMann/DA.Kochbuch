@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DA.Kochbuch.Blazor.Server.Model;
 
 public partial class Recipe
 {
     public int Id { get; set; }
-
+    [Required]
+    [Range(1, int.MaxValue, ErrorMessage = "This field accepts positive numbers only.")]
     public int NumberPersons { get; set; }
 
     public int UserId { get; set; }
-
+    [Required]
     public string CookInstructon { get; set; } = null!;
-
+    [Required]
     public string Name { get; set; } = null!;
 
     public DateTime? ChangeDate { get; set; }
