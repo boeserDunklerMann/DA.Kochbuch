@@ -20,5 +20,19 @@ namespace DA.Kochbuch.Blazor.Server.DataAccess
 
 		public async Task<List<Ingredient>> GetIngredientsAsync()
 			=> await dbContext.Ingredients.AsNoTracking().ToListAsync();
+
+		public async Task AddRecipeAsync(Recipe recipe)
+		{
+			try
+			{
+				await dbContext.Recipes.AddAsync(recipe);
+				await dbContext.SaveChangesAsync();
+			}
+			catch (Exception e)
+			{
+				//logger.LogError($"Exception was thrown: {e.Message}");
+				throw;
+			}
+		}
 	}
 }

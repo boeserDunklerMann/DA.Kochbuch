@@ -12,7 +12,8 @@ builder.Services.AddPooledDbContextFactory<KochbuchContext>(opts =>
 	opts.UseMySQL(builder.Configuration.GetConnectionString("default")!));
 builder.Services.AddScoped<IKochbuch, KochbuchDataAccessLayer>();
 builder.Services.AddGraphQLServer()
-	.AddQueryType<KochbuchQueryResolver>();
+	.AddQueryType<KochbuchQueryResolver>()
+	.AddMutationType<KochbuchMutationResolver>();
 
 var app = builder.Build();
 

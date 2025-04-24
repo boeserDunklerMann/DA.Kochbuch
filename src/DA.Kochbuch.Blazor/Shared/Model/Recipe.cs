@@ -26,4 +26,11 @@ public partial class Recipe
     public virtual ICollection<RecipeImage> RecipeImages { get; set; } = new List<RecipeImage>();
 
     public virtual User User { get; set; } = null!;
+
+    public Recipe()
+    {
+        CookInstructon = "";
+        Name = "";
+        NumberPersons = 1;
+    }
 }
