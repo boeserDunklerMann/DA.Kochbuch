@@ -20,5 +20,9 @@ namespace DA.Kochbuch.Blazor.Server.GraphQL
 		[GraphQLDescription("Gets all ingredients.")]
 		public async Task<List<Ingredient>> GetIngredientsAsync()
 			=> await kochbuchService.GetIngredientsAsync();
+
+		[GraphQLDescription("Gets all users.")]
+		public async Task<List<User>> GetUsersAsync()
+			=> await kochbuchService.GetUsersAsync();
 	}
 }

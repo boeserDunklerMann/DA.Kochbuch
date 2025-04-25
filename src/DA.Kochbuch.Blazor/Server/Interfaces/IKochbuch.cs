@@ -11,6 +11,7 @@ namespace DA.Kochbuch.Blazor.Server.Interfaces
 		Task<List<Ingredient>> GetIngredientsAsync();
 		Task<List<Unit>> GetUnitsAsync();
 		Task<List<Recipe>> GetRecipesAsync();
+		Task<List<User>> GetUsersAsync();
 		#endregion
 
 		#region Mutation

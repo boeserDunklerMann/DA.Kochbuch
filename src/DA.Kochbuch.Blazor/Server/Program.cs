@@ -34,6 +34,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.MapGraphQL();
+app.UseCors(policy =>
+{
+	policy.WithOrigins("https://localhost:7278")
+		 .AllowAnyMethod()
+		 .AllowAnyHeader()
+		 .AllowCredentials();
+});
 
 app.MapRazorPages();
 app.MapControllers();
